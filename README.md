@@ -1,6 +1,10 @@
 # bSoundMute
 Quickly toggle mute for any open and controllable program with volume control.
 
+> _Author: bwaynesu_  
+> _Created: August 15, 2015_  
+> _Tags: C#, Windows, .Net Framework 4.5_
+
 [[巴哈討論串]](https://forum.gamer.com.tw/Co.php?bsn=60030&sn=1868316)
 
 It looks like this:  

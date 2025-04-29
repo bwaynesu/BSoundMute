@@ -106,223 +106,223 @@ namespace bSoundMute.Forms
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.captionWindowLabel = new System.Windows.Forms.Label();
-            this.IDWindowLabel = new System.Windows.Forms.Label();
-            this.exitButton = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.windowSizeLabel = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.setupButton = new System.Windows.Forms.Button();
-            this.versionLabel = new System.Windows.Forms.Label();
-            this.versionValuelabel = new System.Windows.Forms.Label();
-            this.copyrightValueLabel = new System.Windows.Forms.Label();
-            this.okButton = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Refreshbutton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
-            //
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            captionWindowLabel = new Label();
+            IDWindowLabel = new Label();
+            exitButton = new Button();
+            timer1 = new System.Windows.Forms.Timer(components);
+            windowSizeLabel = new Label();
+            label4 = new Label();
+            notifyIcon1 = new NotifyIcon(components);
+            pictureBox1 = new PictureBox();
+            setupButton = new Button();
+            versionLabel = new Label();
+            versionValuelabel = new Label();
+            copyrightValueLabel = new Label();
+            okButton = new Button();
+            label5 = new Label();
+            Refreshbutton = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            SuspendLayout();
+            // 
             // label1
-            //
-            this.label1.Font = new System.Drawing.Font("PMingLiU", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(104, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 18);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Active Window Detail";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
+            label1.Font = new System.Drawing.Font("PMingLiU", 9F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 136);
+            label1.Location = new System.Drawing.Point(125, 7);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(174, 20);
+            label1.TabIndex = 0;
+            label1.Text = "Active Window Detail";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label2
-            //
-            this.label2.Location = new System.Drawing.Point(16, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Window Title : ";
-            //
+            // 
+            label2.Location = new System.Drawing.Point(19, 49);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(115, 20);
+            label2.TabIndex = 1;
+            label2.Text = "Window Title : ";
+            // 
             // label3
-            //
-            this.label3.Location = new System.Drawing.Point(16, 78);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 18);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Window Handle :";
-            //
+            // 
+            label3.Location = new System.Drawing.Point(19, 83);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(115, 19);
+            label3.TabIndex = 2;
+            label3.Text = "Window Handle :";
+            // 
             // captionWindowLabel
-            //
-            this.captionWindowLabel.Location = new System.Drawing.Point(93, 46);
-            this.captionWindowLabel.Name = "captionWindowLabel";
-            this.captionWindowLabel.Size = new System.Drawing.Size(254, 32);
-            this.captionWindowLabel.TabIndex = 3;
-            //
+            // 
+            captionWindowLabel.Location = new System.Drawing.Point(112, 49);
+            captionWindowLabel.Name = "captionWindowLabel";
+            captionWindowLabel.Size = new System.Drawing.Size(304, 34);
+            captionWindowLabel.TabIndex = 3;
+            // 
             // IDWindowLabel
-            //
-            this.IDWindowLabel.Location = new System.Drawing.Point(112, 78);
-            this.IDWindowLabel.Name = "IDWindowLabel";
-            this.IDWindowLabel.Size = new System.Drawing.Size(224, 18);
-            this.IDWindowLabel.TabIndex = 4;
-            //
+            // 
+            IDWindowLabel.Location = new System.Drawing.Point(134, 83);
+            IDWindowLabel.Name = "IDWindowLabel";
+            IDWindowLabel.Size = new System.Drawing.Size(269, 19);
+            IDWindowLabel.TabIndex = 4;
+            // 
             // exitButton
-            //
-            this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.exitButton.Location = new System.Drawing.Point(207, 117);
-            this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(58, 27);
-            this.exitButton.TabIndex = 2;
-            this.exitButton.Text = "EXIT";
-            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
-            //
+            // 
+            exitButton.FlatStyle = FlatStyle.System;
+            exitButton.Location = new System.Drawing.Point(248, 125);
+            exitButton.Name = "exitButton";
+            exitButton.Size = new System.Drawing.Size(70, 29);
+            exitButton.TabIndex = 2;
+            exitButton.Text = "EXIT";
+            exitButton.Click += exitButton_Click;
+            // 
             // timer1
-            //
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 250; // 從 25 毫秒改為 250 毫秒以減少 CPU 使用率
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            //
+            // 
+            timer1.Enabled = true;
+            timer1.Interval = 250;
+            timer1.Tick += timer1_Tick;
+            // 
             // windowSizeLabel
-            //
-            this.windowSizeLabel.Location = new System.Drawing.Point(112, 97);
-            this.windowSizeLabel.Name = "windowSizeLabel";
-            this.windowSizeLabel.Size = new System.Drawing.Size(224, 19);
-            this.windowSizeLabel.TabIndex = 7;
-            //
+            // 
+            windowSizeLabel.Location = new System.Drawing.Point(134, 103);
+            windowSizeLabel.Name = "windowSizeLabel";
+            windowSizeLabel.Size = new System.Drawing.Size(269, 21);
+            windowSizeLabel.TabIndex = 7;
+            // 
             // label4
-            //
-            this.label4.Location = new System.Drawing.Point(16, 97);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(96, 19);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Window Size :";
-            //
+            // 
+            label4.Location = new System.Drawing.Point(19, 103);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(115, 21);
+            label4.TabIndex = 6;
+            label4.Text = "Window Size :";
+            // 
             // notifyIcon1
-            //
-            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIcon1.BalloonTipText = "程式於背景執行";
-            this.notifyIcon1.BalloonTipTitle = "bSoundMute";
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
-            //
+            // 
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon1.BalloonTipText = "程式於背景執行";
+            notifyIcon1.BalloonTipTitle = "BSoundMute";
+            notifyIcon1.Icon = (System.Drawing.Icon)resources.GetObject("notifyIcon1.Icon");
+            notifyIcon1.Visible = true;
+            notifyIcon1.MouseClick += notifyIcon1_MouseClick;
+            notifyIcon1.MouseDoubleClick += notifyIcon1_MouseClick;
+            // 
             // pictureBox1
-            //
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::bSoundMute.Properties.Resources.Ike_2;
-            this.pictureBox1.Location = new System.Drawing.Point(294, 78);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(55, 74);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            //
+            // 
+            pictureBox1.Cursor = Cursors.Hand;
+            pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new System.Drawing.Point(353, 83);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new System.Drawing.Size(66, 79);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 8;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
             // setupButton
-            //
-            this.setupButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.setupButton.Location = new System.Drawing.Point(147, 148);
-            this.setupButton.Name = "setupButton";
-            this.setupButton.Size = new System.Drawing.Size(57, 27);
-            this.setupButton.TabIndex = 1;
-            this.setupButton.Text = "SETUP";
-            this.setupButton.Visible = false;
-            this.setupButton.Click += new System.EventHandler(this.setupbutton_Click);
-            //
+            // 
+            setupButton.FlatStyle = FlatStyle.System;
+            setupButton.Location = new System.Drawing.Point(176, 158);
+            setupButton.Name = "setupButton";
+            setupButton.Size = new System.Drawing.Size(69, 29);
+            setupButton.TabIndex = 1;
+            setupButton.Text = "SETUP";
+            setupButton.Visible = false;
+            setupButton.Click += setupbutton_Click;
+            // 
             // versionLabel
-            //
-            this.versionLabel.Location = new System.Drawing.Point(0, 157);
-            this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(55, 19);
-            this.versionLabel.TabIndex = 10;
-            this.versionLabel.Text = "Version : ";
-            this.versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
+            versionLabel.Location = new System.Drawing.Point(0, 167);
+            versionLabel.Name = "versionLabel";
+            versionLabel.Size = new System.Drawing.Size(66, 21);
+            versionLabel.TabIndex = 10;
+            versionLabel.Text = "Version : ";
+            versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // versionValuelabel
-            //
-            this.versionValuelabel.Font = new System.Drawing.Font("PMingLiU", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.versionValuelabel.Location = new System.Drawing.Point(48, 157);
-            this.versionValuelabel.Name = "versionValuelabel";
-            this.versionValuelabel.Size = new System.Drawing.Size(76, 19);
-            this.versionValuelabel.TabIndex = 11;
-            this.versionValuelabel.Text = "1.0.0.0";
-            this.versionValuelabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
+            versionValuelabel.Font = new System.Drawing.Font("PMingLiU", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 136);
+            versionValuelabel.Location = new System.Drawing.Point(58, 167);
+            versionValuelabel.Name = "versionValuelabel";
+            versionValuelabel.Size = new System.Drawing.Size(91, 21);
+            versionValuelabel.TabIndex = 11;
+            versionValuelabel.Text = "1.0.0.0";
+            versionValuelabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // copyrightValueLabel
-            //
-            this.copyrightValueLabel.Location = new System.Drawing.Point(262, 157);
-            this.copyrightValueLabel.Name = "copyrightValueLabel";
-            this.copyrightValueLabel.Size = new System.Drawing.Size(104, 19);
-            this.copyrightValueLabel.TabIndex = 12;
-            this.copyrightValueLabel.Text = "©  2015 bWayneSu";
-            this.copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
+            // 
+            copyrightValueLabel.Location = new System.Drawing.Point(314, 167);
+            copyrightValueLabel.Name = "copyrightValueLabel";
+            copyrightValueLabel.Size = new System.Drawing.Size(125, 21);
+            copyrightValueLabel.TabIndex = 12;
+            copyrightValueLabel.Text = "©  2015 bwaynesu";
+            copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // okButton
-            //
-            this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.okButton.Location = new System.Drawing.Point(87, 117);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(57, 27);
-            this.okButton.TabIndex = 0;
-            this.okButton.Text = "OK";
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
-            //
+            // 
+            okButton.FlatStyle = FlatStyle.System;
+            okButton.Location = new System.Drawing.Point(104, 125);
+            okButton.Name = "okButton";
+            okButton.Size = new System.Drawing.Size(69, 29);
+            okButton.TabIndex = 0;
+            okButton.Text = "OK";
+            okButton.Click += okButton_Click;
+            // 
             // label5
-            //
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(130, 160);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(97, 12);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Hotkeys : B + LCtrl";
-            //
+            // 
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(156, 171);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(105, 15);
+            label5.TabIndex = 13;
+            label5.Text = "Hotkeys : B + LCtrl";
+            // 
             // Refreshbutton
-            //
-            this.Refreshbutton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.Refreshbutton.Location = new System.Drawing.Point(147, 117);
-            this.Refreshbutton.Name = "Refreshbutton";
-            this.Refreshbutton.Size = new System.Drawing.Size(57, 27);
-            this.Refreshbutton.TabIndex = 14;
-            this.Refreshbutton.Text = "Refresh";
-            this.Refreshbutton.Click += new System.EventHandler(this.Refreshbutton_Click);
-            //
+            // 
+            Refreshbutton.FlatStyle = FlatStyle.System;
+            Refreshbutton.Location = new System.Drawing.Point(176, 125);
+            Refreshbutton.Name = "Refreshbutton";
+            Refreshbutton.Size = new System.Drawing.Size(69, 29);
+            Refreshbutton.TabIndex = 14;
+            Refreshbutton.Text = "Refresh";
+            Refreshbutton.Click += Refreshbutton_Click;
+            // 
             // MainForm
-            //
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
-            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(369, 174);
-            this.Controls.Add(this.Refreshbutton);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.okButton);
-            this.Controls.Add(this.copyrightValueLabel);
-            this.Controls.Add(this.versionValuelabel);
-            this.Controls.Add(this.versionLabel);
-            this.Controls.Add(this.setupButton);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.windowSizeLabel);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.exitButton);
-            this.Controls.Add(this.IDWindowLabel);
-            this.Controls.Add(this.captionWindowLabel);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "bSoundMute";
-            this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleBaseSize = new System.Drawing.Size(6, 16);
+            BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            ClientSize = new System.Drawing.Size(442, 196);
+            Controls.Add(Refreshbutton);
+            Controls.Add(label5);
+            Controls.Add(okButton);
+            Controls.Add(copyrightValueLabel);
+            Controls.Add(versionValuelabel);
+            Controls.Add(versionLabel);
+            Controls.Add(setupButton);
+            Controls.Add(pictureBox1);
+            Controls.Add(windowSizeLabel);
+            Controls.Add(label4);
+            Controls.Add(exitButton);
+            Controls.Add(IDWindowLabel);
+            Controls.Add(captionWindowLabel);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            Name = "MainForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "BSoundMute";
+            TopMost = true;
+            FormClosing += MainForm_FormClosing;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion Windows Form Designer generated code

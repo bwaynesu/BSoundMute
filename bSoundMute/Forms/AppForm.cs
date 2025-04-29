@@ -35,9 +35,9 @@ namespace bSoundMute.Forms
             mg.m_Right = -1;
             mg.m_Top = -1;
 
-            if (System.Environment.OSVersion.Version.Major >= 6) //make sure you are not on a legacy OS
+            if (System.Environment.OSVersion.Version.Major >= 6) //Make sure you are not on a legacy OS
             {
-                //check if the desktop composition is enabled
+                //Check if the desktop composition is enabled
                 DwmIsCompositionEnabled(ref en);
 
                 if (en > 0)
@@ -53,7 +53,7 @@ namespace bSoundMute.Forms
             }
             else
             {
-                MessageBox.Show("Please run this on Windows Vista.");
+                MessageBox.Show("Please run this on Windows Vista or newer.");
                 return false;
             }
         }

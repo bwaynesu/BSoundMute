@@ -11,7 +11,7 @@ namespace bSoundMute.Forms
 {
     public class MainForm : System.Windows.Forms.Form
     {
-        private const int MOUSE_POLL_INTERVAL = 4; // 僅每 4 次計時器刻度檢查一次
+        private const int MOUSE_POLL_INTERVAL = 4; // Check mouse position only every 4 timer ticks
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -74,7 +74,7 @@ namespace bSoundMute.Forms
 
         protected override void Dispose(bool disposing)
         {
-            // 確保鍵盤鉤子在應用退出時正確卸載，防止資源洩漏
+            // Ensure keyboard hook is properly unhooked when application exits to prevent resource leaks
             if (gkh_ != null)
             {
                 gkh_.unhook();
@@ -192,7 +192,7 @@ namespace bSoundMute.Forms
             // notifyIcon1
             // 
             notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon1.BalloonTipText = "程式於背景執行";
+            notifyIcon1.BalloonTipText = "Program running in the background";
             notifyIcon1.BalloonTipTitle = "BSoundMute";
             notifyIcon1.Icon = (System.Drawing.Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Visible = true;
@@ -341,7 +341,7 @@ namespace bSoundMute.Forms
             }
         }
 
-        // no use
+        // Not used
         private void GetActiveWindow()
         {
             IntPtr handle;
@@ -351,7 +351,7 @@ namespace bSoundMute.Forms
 
             if (Win32.GetWindowText((int)handle, buff_, 256) > 0)
             {
-                // avoid this application
+                // Avoid this application
                 if (buff_.ToString().GetHashCode() == applicationNameHash_)
                     thisAppHandle_ = handle;
 
@@ -359,7 +359,7 @@ namespace bSoundMute.Forms
                 {
                     handle_ = handle;
 
-                    // show information
+                    // Show information
                     this.captionWindowLabel.Text = buff_.ToString();
                     this.IDWindowLabel.Text = handle.ToString();
                     if (Win32.GetWindowRect(handle_, out appRect_))
@@ -383,7 +383,7 @@ namespace bSoundMute.Forms
         {
             if (appRect_.Top != preAppRect_.Top || appRect_.Bottom != preAppRect_.Bottom || appRect_.Left != preAppRect_.Left || appRect_.Right != preAppRect_.Right)
             {
-                if (Win32.DwmIsCompositionEnabled || Application.RenderWithVisualStyles) // not traditional theme
+                if (Win32.DwmIsCompositionEnabled || Application.RenderWithVisualStyles) // Not traditional theme
                 {
                     if (appRect_.Right - 333 >= appRect_.Left)
                     {
@@ -414,7 +414,7 @@ namespace bSoundMute.Forms
         {
             // GetActiveWindow();
 
-            // 只在每 MOUSE_POLL_INTERVAL 次計時器刻度時檢查滑鼠位置，以減少 CPU 使用率
+            // Only check mouse position every MOUSE_POLL_INTERVAL timer ticks to reduce CPU usage
             mousePollCounter++;
             if (mousePollCounter >= MOUSE_POLL_INTERVAL)
             {
@@ -546,7 +546,7 @@ namespace bSoundMute.Forms
 
             if (Win32.GetWindowText((int)handle, buff_, 256) > 0)
             {
-                // avoid this application
+                // Avoid this application
                 if (buff_.ToString().GetHashCode() == applicationNameHash_)
                     thisAppHandle_ = handle;
 
@@ -554,7 +554,7 @@ namespace bSoundMute.Forms
                 {
                     handle_ = handle;
 
-                    // show information
+                    // Show information
                     this.captionWindowLabel.Text = buff_.ToString();
                     this.IDWindowLabel.Text = handle.ToString();
                     if (Win32.GetWindowRect(handle_, out appRect_))

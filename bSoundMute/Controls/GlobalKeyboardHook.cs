@@ -87,13 +87,14 @@ namespace bSoundMute.Controls
 
         #endregion Constructors and Destructors
 
-        #region Public Methods    /// <summary>
+        #region Public Methods
 
+        /// <summary>
         /// Installs the global hook
         /// </summary>
         public void hook()
         {
-            // 只有在鉤子尚未安裝時才安裝，避免重複安裝
+            // Only install the hook when it's not already installed to avoid duplicate installation
             if (hhook == IntPtr.Zero)
             {
                 kbhp_ = new keyboardHookProc(hookProc);
@@ -108,7 +109,7 @@ namespace bSoundMute.Controls
         /// </summary>
         public void unhook()
         {
-            // 只有在鉤子已安裝時才卸載，並將句柄設為 Zero
+            // Only uninstall the hook when it's already installed, and set the handle to Zero
             if (hhook != IntPtr.Zero)
             {
                 UnhookWindowsHookEx(hhook);
@@ -148,7 +149,7 @@ namespace bSoundMute.Controls
             return CallNextHookEx(hhook, code, wParam, ref lParam);
         }
 
-        #endregion Public Methods    /// <summary>
+        #endregion Public Methods
 
         #region DLL imports
 

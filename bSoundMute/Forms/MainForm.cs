@@ -42,8 +42,7 @@ namespace bSoundMute.Forms
         private Label label5;
         private Button Refreshbutton;
         private GlobalKeyboardHook gkh_ = new GlobalKeyboardHook();
-        private bool isAutoHide_ = true;
-        private Stopwatch stopWatch_ = new Stopwatch();
+        private bool isNotifyIconShowed_ = false;
 
         // 添加用於滑鼠位置檢查節流的變數
         private int mousePollCounter = 0;
@@ -71,8 +70,6 @@ namespace bSoundMute.Forms
             copyrightValueLabel.Text = "© 2015 " + FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).CompanyName;
 
             appForm_.Show();
-            isAutoHide_ = true;
-            stopWatch_.Start();
         }
 
         private void InitialGlobalHook()
@@ -128,9 +125,9 @@ namespace bSoundMute.Forms
             Refreshbutton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
+            //
             // label1
-            // 
+            //
             label1.Font = new System.Drawing.Font("PMingLiU", 9F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 136);
             label1.Location = new System.Drawing.Point(125, 7);
             label1.Name = "label1";
@@ -138,39 +135,39 @@ namespace bSoundMute.Forms
             label1.TabIndex = 0;
             label1.Text = "Active Window Detail";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label2
-            // 
+            //
             label2.Location = new System.Drawing.Point(19, 49);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(115, 20);
             label2.TabIndex = 1;
             label2.Text = "Window Title : ";
-            // 
+            //
             // label3
-            // 
+            //
             label3.Location = new System.Drawing.Point(19, 83);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(115, 19);
             label3.TabIndex = 2;
             label3.Text = "Window Handle :";
-            // 
+            //
             // captionWindowLabel
-            // 
+            //
             captionWindowLabel.Location = new System.Drawing.Point(112, 49);
             captionWindowLabel.Name = "captionWindowLabel";
             captionWindowLabel.Size = new System.Drawing.Size(304, 34);
             captionWindowLabel.TabIndex = 3;
-            // 
+            //
             // IDWindowLabel
-            // 
+            //
             IDWindowLabel.Location = new System.Drawing.Point(134, 83);
             IDWindowLabel.Name = "IDWindowLabel";
             IDWindowLabel.Size = new System.Drawing.Size(269, 19);
             IDWindowLabel.TabIndex = 4;
-            // 
+            //
             // exitButton
-            // 
+            //
             exitButton.FlatStyle = FlatStyle.System;
             exitButton.Location = new System.Drawing.Point(248, 125);
             exitButton.Name = "exitButton";
@@ -178,30 +175,30 @@ namespace bSoundMute.Forms
             exitButton.TabIndex = 2;
             exitButton.Text = "EXIT";
             exitButton.Click += exitButton_Click;
-            // 
+            //
             // timer1
-            // 
+            //
             timer1.Enabled = true;
             timer1.Interval = 250;
             timer1.Tick += timer1_Tick;
-            // 
+            //
             // windowSizeLabel
-            // 
+            //
             windowSizeLabel.Location = new System.Drawing.Point(134, 103);
             windowSizeLabel.Name = "windowSizeLabel";
             windowSizeLabel.Size = new System.Drawing.Size(269, 21);
             windowSizeLabel.TabIndex = 7;
-            // 
+            //
             // label4
-            // 
+            //
             label4.Location = new System.Drawing.Point(19, 103);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(115, 21);
             label4.TabIndex = 6;
             label4.Text = "Window Size :";
-            // 
+            //
             // notifyIcon1
-            // 
+            //
             notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
             notifyIcon1.BalloonTipText = "程式於背景執行";
             notifyIcon1.BalloonTipTitle = "BSoundMute";
@@ -209,9 +206,9 @@ namespace bSoundMute.Forms
             notifyIcon1.Visible = true;
             notifyIcon1.MouseClick += notifyIcon1_MouseClick;
             notifyIcon1.MouseDoubleClick += notifyIcon1_MouseClick;
-            // 
+            //
             // pictureBox1
-            // 
+            //
             pictureBox1.Cursor = Cursors.Hand;
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new System.Drawing.Point(353, 83);
@@ -221,9 +218,9 @@ namespace bSoundMute.Forms
             pictureBox1.TabIndex = 8;
             pictureBox1.TabStop = false;
             pictureBox1.Click += pictureBox1_Click;
-            // 
+            //
             // setupButton
-            // 
+            //
             setupButton.FlatStyle = FlatStyle.System;
             setupButton.Location = new System.Drawing.Point(176, 158);
             setupButton.Name = "setupButton";
@@ -232,18 +229,18 @@ namespace bSoundMute.Forms
             setupButton.Text = "SETUP";
             setupButton.Visible = false;
             setupButton.Click += setupbutton_Click;
-            // 
+            //
             // versionLabel
-            // 
+            //
             versionLabel.Location = new System.Drawing.Point(0, 167);
             versionLabel.Name = "versionLabel";
             versionLabel.Size = new System.Drawing.Size(66, 21);
             versionLabel.TabIndex = 10;
             versionLabel.Text = "Version : ";
             versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // versionValuelabel
-            // 
+            //
             versionValuelabel.Font = new System.Drawing.Font("PMingLiU", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 136);
             versionValuelabel.Location = new System.Drawing.Point(58, 167);
             versionValuelabel.Name = "versionValuelabel";
@@ -251,18 +248,18 @@ namespace bSoundMute.Forms
             versionValuelabel.TabIndex = 11;
             versionValuelabel.Text = "1.0.0.0";
             versionValuelabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // copyrightValueLabel
-            // 
+            //
             copyrightValueLabel.Location = new System.Drawing.Point(314, 167);
             copyrightValueLabel.Name = "copyrightValueLabel";
             copyrightValueLabel.Size = new System.Drawing.Size(125, 21);
             copyrightValueLabel.TabIndex = 12;
             copyrightValueLabel.Text = "©  2015 bwaynesu";
             copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // okButton
-            // 
+            //
             okButton.FlatStyle = FlatStyle.System;
             okButton.Location = new System.Drawing.Point(104, 125);
             okButton.Name = "okButton";
@@ -270,18 +267,18 @@ namespace bSoundMute.Forms
             okButton.TabIndex = 0;
             okButton.Text = "OK";
             okButton.Click += okButton_Click;
-            // 
+            //
             // label5
-            // 
+            //
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(156, 171);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(105, 15);
             label5.TabIndex = 13;
             label5.Text = "Hotkeys : B + LCtrl";
-            // 
+            //
             // Refreshbutton
-            // 
+            //
             Refreshbutton.FlatStyle = FlatStyle.System;
             Refreshbutton.Location = new System.Drawing.Point(176, 125);
             Refreshbutton.Name = "Refreshbutton";
@@ -289,9 +286,9 @@ namespace bSoundMute.Forms
             Refreshbutton.TabIndex = 14;
             Refreshbutton.Text = "Refresh";
             Refreshbutton.Click += Refreshbutton_Click;
-            // 
+            //
             // MainForm
-            // 
+            //
             AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             ClientSize = new System.Drawing.Size(442, 196);
@@ -438,14 +435,6 @@ namespace bSoundMute.Forms
             UpdateMuteIcon();
             appForm_.UpdateBtnDisplay();
             UpdateFrmSize();
-
-            if (isAutoHide_ && stopWatch_.IsRunning && stopWatch_.Elapsed.Seconds >= 3.0f)
-            {
-                isAutoHide_ = false;
-                stopWatch_.Stop();
-                this.Hide();
-                notifyIcon1.ShowBalloonTip(3000);
-            }
         }
 
         private void exitButton_Click(object sender, System.EventArgs e)
@@ -599,14 +588,16 @@ namespace bSoundMute.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!trulyExit_)
+            if (trulyExit_)
+            {
+                notifyIcon1.Visible = false;
+            }
+            else
             {
                 e.Cancel = true;
-                trulyExit_ = false;
                 this.Hide();
-                notifyIcon1.ShowBalloonTip(3000);
+                ShowNotifyIconIfNeeded();
             }
-            notifyIcon1.Visible = false;
         }
 
         private void Refreshbutton_Click(object sender, EventArgs e)
@@ -624,7 +615,7 @@ namespace bSoundMute.Forms
         private void okButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            notifyIcon1.ShowBalloonTip(3000);
+            ShowNotifyIconIfNeeded();
         }
 
         private void gkh_KeyUp(object sender, KeyEventArgs e)
@@ -650,6 +641,15 @@ namespace bSoundMute.Forms
 
         private void setupbutton_Click(object sender, EventArgs e)
         {
+        }
+
+        private void ShowNotifyIconIfNeeded()
+        {
+            if (!isNotifyIconShowed_)
+            {
+                notifyIcon1.ShowBalloonTip(2000);
+                isNotifyIconShowed_ = true;
+            }
         }
     }
 }

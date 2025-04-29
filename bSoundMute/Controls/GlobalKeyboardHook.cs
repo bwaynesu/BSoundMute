@@ -1,178 +1,201 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace bSoundMute.Controls
 {
-  /// <summary>
-  /// A class that manages a global low level keyboard hook
-  /// </summary>
-  class GlobalKeyboardHook
-  {
-    #region Constant, Structure and Delegate Definitions
     /// <summary>
-    /// defines the callback type for the hook
+    /// A class that manages a global low level keyboard hook
     /// </summary>
-    public delegate int keyboardHookProc(int code, int wParam, ref keyboardHookStruct lParam);
-    private static keyboardHookProc kbhp_;
-
-    public struct keyboardHookStruct
+    internal class GlobalKeyboardHook
     {
-      public int vkCode;
-      public int scanCode;
-      public int flags;
-      public int time;
-      public int dwExtraInfo;
-    }
+        #region Constant, Structure and Delegate Definitions
 
-    const int WH_KEYBOARD_LL = 13;
-    const int WM_KEYDOWN = 0x100;
-    const int WM_KEYUP = 0x101;
-    const int WM_SYSKEYDOWN = 0x104;
-    const int WM_SYSKEYUP = 0x105;
-    #endregion
+        /// <summary>
+        /// defines the callback type for the hook
+        /// </summary>
+        public delegate int keyboardHookProc(int code, int wParam, ref keyboardHookStruct lParam);
 
-    #region Instance Variables
-    /// <summary>
-    /// The collections of keys to watch for
-    /// </summary>
-    public List<Keys> HookedKeys = new List<Keys>();
-    public List<bool> HookedKeysState = new List<bool>();
-    /// <summary>
-    /// Handle to the hook, need this to unhook and call the next hook
-    /// </summary>
-    IntPtr hhook = IntPtr.Zero;
-    #endregion
+        private static keyboardHookProc kbhp_;
 
-    #region Events
-    /// <summary>
-    /// Occurs when one of the hooked keys is pressed
-    /// </summary>
-    public event KeyEventHandler KeyDown;
-    /// <summary>
-    /// Occurs when one of the hooked keys is released
-    /// </summary>
-    public event KeyEventHandler KeyUp;
-    #endregion
-
-    #region Constructors and Destructors
-    /// <summary>
-    /// Initializes a new instance of the <see cref="globalKeyboardHook"/> class and installs the keyboard hook.
-    /// </summary>
-    public GlobalKeyboardHook()
-    {
-      hook();
-    }
-
-    /// <summary>
-    /// Releases unmanaged resources and performs other cleanup operations before the
-    /// <see cref="globalKeyboardHook"/> is reclaimed by garbage collection and uninstalls the keyboard hook.
-    /// </summary>
-    ~GlobalKeyboardHook()
-    {
-      unhook();
-    }
-    #endregion
-
-    #region Public Methods
-    /// <summary>
-    /// Installs the global hook
-    /// </summary>
-    public void hook()
-    {
-      kbhp_ = new keyboardHookProc(hookProc);
-
-      IntPtr hInstance = LoadLibrary("User32");
-      hhook = SetWindowsHookEx(WH_KEYBOARD_LL, kbhp_, hInstance, 0);
-    }
-
-    /// <summary>
-    /// Uninstall the global hook
-    /// </summary>
-    public void unhook()
-    {
-      UnhookWindowsHookEx(hhook);
-    }
-
-    /// <summary>
-    /// The callback for the keyboard hook
-    /// </summary>
-    /// <param name="code">The hook code, if it isn't >= 0, the function shouldn't do anyting</param>
-    /// <param name="wParam">The event type</param>
-    /// <param name="lParam">The keyhook event information</param>
-    /// <returns></returns>
-    public int hookProc(int code, int wParam, ref keyboardHookStruct lParam)
-    {
-      if (code >= 0)
-      {
-        Keys key = (Keys)lParam.vkCode;
-        if (HookedKeys.Contains(key))
+        public struct keyboardHookStruct
         {
-          KeyEventArgs kea = new KeyEventArgs(key);
-          if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) && (KeyDown != null))
-          {
-            HookedKeysState[HookedKeys.FindIndex(x => x == key)] = true;
-            KeyDown(this, kea);
-          }
-          else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && (KeyUp != null))
-          {
-            HookedKeysState[HookedKeys.FindIndex(x => x == key)] = false;
-            KeyUp(this, kea);
-          }
-          if (kea.Handled)
+            public int vkCode;
+            public int scanCode;
+            public int flags;
+            public int time;
+            public int dwExtraInfo;
+        }
+
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x100;
+        private const int WM_KEYUP = 0x101;
+        private const int WM_SYSKEYDOWN = 0x104;
+        private const int WM_SYSKEYUP = 0x105;
+
+        #endregion Constant, Structure and Delegate Definitions
+
+        #region Instance Variables
+
+        /// <summary>
+        /// The collections of keys to watch for
+        /// </summary>
+        public List<Keys> HookedKeys = new List<Keys>();
+
+        public List<bool> HookedKeysState = new List<bool>();
+
+        /// <summary>
+        /// Handle to the hook, need this to unhook and call the next hook
+        /// </summary>
+        private IntPtr hhook = IntPtr.Zero;
+
+        #endregion Instance Variables
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when one of the hooked keys is pressed
+        /// </summary>
+        public event KeyEventHandler KeyDown;
+
+        /// <summary>
+        /// Occurs when one of the hooked keys is released
+        /// </summary>
+        public event KeyEventHandler KeyUp;
+
+        #endregion Events
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="globalKeyboardHook"/> class and installs the keyboard hook.
+        /// </summary>
+        public GlobalKeyboardHook()
+        {
+            hook();
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="globalKeyboardHook"/> is reclaimed by garbage collection and uninstalls the keyboard hook.
+        /// </summary>
+        ~GlobalKeyboardHook()
+        {
+            unhook();
+        }
+
+        #endregion Constructors and Destructors
+
+        #region Public Methods    /// <summary>
+
+        /// Installs the global hook
+        /// </summary>
+        public void hook()
+        {
+            // 只有在鉤子尚未安裝時才安裝，避免重複安裝
+            if (hhook == IntPtr.Zero)
+            {
+                kbhp_ = new keyboardHookProc(hookProc);
+
+                IntPtr hInstance = LoadLibrary("User32");
+                hhook = SetWindowsHookEx(WH_KEYBOARD_LL, kbhp_, hInstance, 0);
+            }
+        }
+
+        /// <summary>
+        /// Uninstall the global hook
+        /// </summary>
+        public void unhook()
+        {
+            // 只有在鉤子已安裝時才卸載，並將句柄設為 Zero
+            if (hhook != IntPtr.Zero)
+            {
+                UnhookWindowsHookEx(hhook);
+                hhook = IntPtr.Zero;
+            }
+        }
+
+        /// <summary>
+        /// The callback for the keyboard hook
+        /// </summary>
+        /// <param name="code">The hook code, if it isn't >= 0, the function shouldn't do anyting</param>
+        /// <param name="wParam">The event type</param>
+        /// <param name="lParam">The keyhook event information</param>
+        /// <returns></returns>
+        public int hookProc(int code, int wParam, ref keyboardHookStruct lParam)
+        {
+            if (code >= 0)
+            {
+                Keys key = (Keys)lParam.vkCode;
+                if (HookedKeys.Contains(key))
+                {
+                    KeyEventArgs kea = new KeyEventArgs(key);
+                    if ((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) && (KeyDown != null))
+                    {
+                        HookedKeysState[HookedKeys.FindIndex(x => x == key)] = true;
+                        KeyDown(this, kea);
+                    }
+                    else if ((wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && (KeyUp != null))
+                    {
+                        HookedKeysState[HookedKeys.FindIndex(x => x == key)] = false;
+                        KeyUp(this, kea);
+                    }
+                    if (kea.Handled)
+                        return CallNextHookEx(hhook, code, wParam, ref lParam);
+                }
+            }
             return CallNextHookEx(hhook, code, wParam, ref lParam);
         }
-      }
-      return CallNextHookEx(hhook, code, wParam, ref lParam);
+
+        #endregion Public Methods    /// <summary>
+
+        #region DLL imports
+
+        /// <summary>
+        /// Sets the windows hook, do the desired event, one of hInstance or threadId must be non-null
+        /// </summary>
+        /// <param name="idHook">The id of the event you want to hook</param>
+        /// <param name="callback">The callback.</param>
+        /// <param name="hInstance">The handle you want to attach the event to, can be null</param>
+        /// <param name="threadId">The thread you want to attach the event to, can be null</param>
+        /// <returns>a handle to the desired hook</returns>
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWindowsHookEx(int idHook, keyboardHookProc callback, IntPtr hInstance, uint threadId);
+
+        /// <summary>
+        /// Unhooks the windows hook.
+        /// </summary>
+        /// <param name="hInstance">The hook handle that was returned from SetWindowsHookEx</param>
+        /// <returns>True if successful, false otherwise</returns>
+        [DllImport("user32.dll")]
+        private static extern bool UnhookWindowsHookEx(IntPtr hInstance);
+
+        /// <summary>
+        /// Calls the next hook.
+        /// </summary>
+        /// <param name="idHook">The hook id</param>
+        /// <param name="nCode">The hook code</param>
+        /// <param name="wParam">The wparam.</param>
+        /// <param name="lParam">The lparam.</param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        private static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref keyboardHookStruct lParam);
+
+        /// <summary>
+        /// Loads the library.
+        /// </summary>
+        /// <param name="lpFileName">Name of the library</param>
+        /// <returns>A handle to the library</returns>
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string lpFileName);
+
+        #endregion DLL imports
+
+        public void AddKey(Keys k)
+        {
+            HookedKeys.Add(k);
+            HookedKeysState.Add(false);
+        }
     }
-    #endregion
-
-    #region DLL imports
-    /// <summary>
-    /// Sets the windows hook, do the desired event, one of hInstance or threadId must be non-null
-    /// </summary>
-    /// <param name="idHook">The id of the event you want to hook</param>
-    /// <param name="callback">The callback.</param>
-    /// <param name="hInstance">The handle you want to attach the event to, can be null</param>
-    /// <param name="threadId">The thread you want to attach the event to, can be null</param>
-    /// <returns>a handle to the desired hook</returns>
-    [DllImport("user32.dll")]
-    static extern IntPtr SetWindowsHookEx(int idHook, keyboardHookProc callback, IntPtr hInstance, uint threadId);
-
-    /// <summary>
-    /// Unhooks the windows hook.
-    /// </summary>
-    /// <param name="hInstance">The hook handle that was returned from SetWindowsHookEx</param>
-    /// <returns>True if successful, false otherwise</returns>
-    [DllImport("user32.dll")]
-    static extern bool UnhookWindowsHookEx(IntPtr hInstance);
-
-    /// <summary>
-    /// Calls the next hook.
-    /// </summary>
-    /// <param name="idHook">The hook id</param>
-    /// <param name="nCode">The hook code</param>
-    /// <param name="wParam">The wparam.</param>
-    /// <param name="lParam">The lparam.</param>
-    /// <returns></returns>
-    [DllImport("user32.dll")]
-    static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref keyboardHookStruct lParam);
-
-    /// <summary>
-    /// Loads the library.
-    /// </summary>
-    /// <param name="lpFileName">Name of the library</param>
-    /// <returns>A handle to the library</returns>
-    [DllImport("kernel32.dll")]
-    static extern IntPtr LoadLibrary(string lpFileName);
-    #endregion
-
-    public void AddKey(Keys k)
-    {
-      HookedKeys.Add(k);
-      HookedKeysState.Add(false);
-    }
-  }
 }

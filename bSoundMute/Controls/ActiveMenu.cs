@@ -2,11 +2,11 @@
 
 namespace bSoundMute.Controls
 {
-  public static class ActiveMenu
-  {
-    public static IActiveMenu GetInstance(Form form)
+    public static class ActiveMenu
     {
-      return ActiveMenuImpl.GetInstance(form);
+        public static IActiveMenu GetInstance(Form form)
+        {
+            return ActiveMenuImpl.GetInstance(form);
+        }
     }
-  }
 }

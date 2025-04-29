@@ -2,7 +2,7 @@
 
 namespace bSoundMute.Controls
 {
-  public interface IActiveItems : IList<SoundControlButton>
-  {
-  }
+    public interface IActiveItems : IList<SoundControlButton>
+    {
+    }
 }

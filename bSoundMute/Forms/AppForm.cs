@@ -1,120 +1,119 @@
-﻿using System;
+﻿using bSoundMute.Controls;
+using bSoundMute.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
-
-using bSoundMute.Controls;
-using bSoundMute.Utils;
 
 namespace bSoundMute.Forms
 {
-  public partial class AppForm : Form
-  {
-    [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
-    public extern static int DwmIsCompositionEnabled(ref int en);
-
-    private int counter_ = 2;
-
-    public bool enableAllButton_ = true;
-
-    public AppForm()
+    public partial class AppForm : Form
     {
-      InitializeComponent();
-      bool enableComposition = CheckComposition();
-    }
+        [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+        public static extern int DwmIsCompositionEnabled(ref int en);
 
-    public bool CheckComposition()
-    {
-      int en = 0;
-      Win32.MARGINS mg = new Win32.MARGINS();
-      mg.m_Buttom = -1;
-      mg.m_Left = -1;
-      mg.m_Right = -1;
-      mg.m_Top = -1;
+        private int counter_ = 2;
 
-      if (System.Environment.OSVersion.Version.Major >= 6) //make sure you are not on a legacy OS 
-      {
-        //check if the desktop composition is enabled
-        DwmIsCompositionEnabled(ref en); 
-        
-        if (en > 0)
+        public bool enableAllButton_ = true;
+
+        public AppForm()
         {
-          Win32.DwmExtendFrameIntoClientArea(this.Handle, ref mg);
-          return true;
+            InitializeComponent();
+            bool enableComposition = CheckComposition();
         }
-        else
-        {
-          Debug.WriteLine("Desktop Composition is Disabled!");
-          return false;
-        }
-      }
-      else
-      {
-        MessageBox.Show("Please run this on Windows Vista.");
-        return false;
-      }
-    }
 
-    private void timer1_Tick(object sender, EventArgs e)
-    {
-      if (counter_ > 0)
-      {
-        --counter_;
-
-        if (counter_ <= 0)
+        public bool CheckComposition()
         {
-          if (enableAllButton_)
-          {
-            IActiveMenu menu = ActiveMenu.GetInstance(this);
-            for (int i = 0; i < menu.Items.Count; ++i)
+            int en = 0;
+            Win32.MARGINS mg = new Win32.MARGINS();
+            mg.m_Buttom = -1;
+            mg.m_Left = -1;
+            mg.m_Right = -1;
+            mg.m_Top = -1;
+
+            if (System.Environment.OSVersion.Version.Major >= 6) //make sure you are not on a legacy OS
             {
-              menu.Items[i].Hide();
-              menu.Items[i].Enabled = false;
+                //check if the desktop composition is enabled
+                DwmIsCompositionEnabled(ref en);
+
+                if (en > 0)
+                {
+                    Win32.DwmExtendFrameIntoClientArea(this.Handle, ref mg);
+                    return true;
+                }
+                else
+                {
+                    Debug.WriteLine("Desktop Composition is Disabled!");
+                    return false;
+                }
             }
-          }
-          enableAllButton_ = false;
+            else
+            {
+                MessageBox.Show("Please run this on Windows Vista.");
+                return false;
+            }
         }
-      }
-    }
 
-    public void ActiveBtnAndStartTimer()
-    {
-      if (!enableAllButton_)
-      {
-        IActiveMenu menu = ActiveMenu.GetInstance(this);
-        for (int i = 0; i < menu.Items.Count; ++i)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-          menu.Items[i].Show();
-          menu.Items[i].Enabled = true;
-        }
-        enableAllButton_ = true;
-      }
-      counter_ = 2;
-    }
+            if (counter_ > 0)
+            {
+                --counter_;
 
-    private bool IsMouseEnter()
-    {
-      this.Cursor = new Cursor(Cursor.Current.Handle);
-      if (Cursor.Position.X >= this.Left && Cursor.Position.X <= this.Right)
-      {
-        if (Cursor.Position.Y >= this.Top && Cursor.Position.Y <= this.Bottom)
+                if (counter_ <= 0)
+                {
+                    if (enableAllButton_)
+                    {
+                        IActiveMenu menu = ActiveMenu.GetInstance(this);
+                        for (int i = 0; i < menu.Items.Count; ++i)
+                        {
+                            menu.Items[i].Hide();
+                            menu.Items[i].Enabled = false;
+                        }
+                    }
+                    enableAllButton_ = false;
+                }
+            }
+        }
+
+        public void ActiveBtnAndStartTimer()
         {
-          return true;
+            if (!enableAllButton_)
+            {
+                IActiveMenu menu = ActiveMenu.GetInstance(this);
+                for (int i = 0; i < menu.Items.Count; ++i)
+                {
+                    menu.Items[i].Show();
+                    menu.Items[i].Enabled = true;
+                }
+                enableAllButton_ = true;
+            }
+            counter_ = 2;
         }
-      }
-      return false;
-    }
 
-    public void UpdateBtnDisplay()
-    {
-      if (IsMouseEnter())
-      {
-        ActiveBtnAndStartTimer();
-      }
+        private bool IsMouseEnter()
+        {
+            this.Cursor = new Cursor(Cursor.Current.Handle);
+            if (Cursor.Position.X >= this.Left && Cursor.Position.X <= this.Right)
+            {
+                if (Cursor.Position.Y >= this.Top && Cursor.Position.Y <= this.Bottom)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void UpdateBtnDisplay()
+        {
+            if (IsMouseEnter())
+            {
+                ActiveBtnAndStartTimer();
+            }
+        }
     }
-  }
 }

@@ -2,18 +2,18 @@
 
 namespace bSoundMute.Controls.Themes
 {
-  public interface ITheme
-  {
-    bool IsDisplayed { get; }
+    public interface ITheme
+    {
+        bool IsDisplayed { get; }
 
-    Color BackColor { get; }
+        Color BackColor { get; }
 
-    Size ControlBoxSize { get; }
+        Size ControlBoxSize { get; }
 
-    Point ButtonOffset { get; }
+        Point ButtonOffset { get; }
 
-    Size FrameBorder { get; }
+        Size FrameBorder { get; }
 
-    Size SystemButtonSize { get; }
-  }
+        Size SystemButtonSize { get; }
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace bSoundMute.Controls
 {
-  internal class ActiveItemsImpl : ListWithEvents<SoundControlButton>, IActiveItems
-  {
-  }
+    internal class ActiveItemsImpl : ListWithEvents<SoundControlButton>, IActiveItems
+    {
+    }
 }

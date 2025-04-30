@@ -435,7 +435,7 @@ namespace bSoundMute.Forms
                 return;
             }
 
-            if (!scButton_.Visible && appForm_.enableAllButton_)
+            if (!scButton_.Visible && appForm_.EnableAllButton)
             {
                 scButton_.Show();
                 scButton_.Enabled = true;

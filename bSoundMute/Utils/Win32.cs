@@ -47,6 +47,21 @@ namespace bSoundMute.Utils
             }
         }
 
+        // Process query flags
+        public const uint PROCESS_QUERY_INFORMATION = 0x0400;
+        public const uint PROCESS_VM_READ = 0x0010;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PROCESS_BASIC_INFORMATION
+        {
+            public IntPtr Reserved1;
+            public IntPtr PebBaseAddress;
+            public IntPtr Reserved2_0;
+            public IntPtr Reserved2_1;
+            public IntPtr UniqueProcessId;
+            public IntPtr InheritedFromUniqueProcessId;
+        }
+
         public const uint WS_CHILD = 0x40000000;
         public const uint WS_EX_LAYERED = 0x00080000;
         public const uint WS_CLIPSIBLINGS = 0x4000000;
@@ -74,6 +89,21 @@ namespace bSoundMute.Utils
                 }
             }
         }
+
+        // Windows API functions for process parent information
+        [DllImport("ntdll.dll")]
+        public static extern int NtQueryInformationProcess(
+            IntPtr processHandle,
+            int processInformationClass,
+            ref PROCESS_BASIC_INFORMATION processInformation,
+            int processInformationLength,
+            out int returnLength);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr handle);
 
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
         public static extern IntPtr GetParent(IntPtr hWnd);
@@ -112,7 +142,7 @@ namespace bSoundMute.Utils
         [DllImport("user32.dll")]
         public static extern int ShowWindow(IntPtr hWnd, uint Msg);
 
-        [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+        [DllImport("dwmapi.dll")]
         public static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS margin);
     }
 }

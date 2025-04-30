@@ -8,27 +8,29 @@ namespace bSoundMute.Forms
 {
     public partial class AppForm : Form
     {
+        private readonly Stopwatch hideItemsTimer_ = new Stopwatch();
+
+        public bool EnableAllButton { get; private set; } = true;
+
         [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
         public static extern int DwmIsCompositionEnabled(ref int en);
-
-        private int counter_ = 2;
-
-        public bool enableAllButton_ = true;
 
         public AppForm()
         {
             InitializeComponent();
-            bool enableComposition = CheckComposition();
+            CheckComposition();
         }
 
         public bool CheckComposition()
         {
-            int en = 0;
-            Win32.MARGINS mg = new Win32.MARGINS();
-            mg.m_Buttom = -1;
-            mg.m_Left = -1;
-            mg.m_Right = -1;
-            mg.m_Top = -1;
+            var en = 0;
+            var mg = new Win32.MARGINS
+            {
+                m_Buttom = -1,
+                m_Left = -1,
+                m_Right = -1,
+                m_Top = -1
+            };
 
             if (System.Environment.OSVersion.Version.Major >= 6) //Make sure you are not on a legacy OS
             {
@@ -53,41 +55,45 @@ namespace bSoundMute.Forms
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        public void ActiveBtnAndStartTimer()
         {
-            if (counter_ > 0)
+            if (!EnableAllButton)
             {
-                --counter_;
+                EnableItems(true);
+                EnableAllButton = true;
+            }
 
-                if (counter_ <= 0)
-                {
-                    if (enableAllButton_)
-                    {
-                        IActiveMenu menu = ActiveMenu.GetInstance(this);
-                        for (int i = 0; i < menu.Items.Count; ++i)
-                        {
-                            menu.Items[i].Hide();
-                            menu.Items[i].Enabled = false;
-                        }
-                    }
-                    enableAllButton_ = false;
-                }
+            hideItemsTimer_.Restart();
+        }
+
+        public void UpdateBtnDisplay()
+        {
+            if (IsMouseEnter())
+            {
+                ActiveBtnAndStartTimer();
             }
         }
 
-        public void ActiveBtnAndStartTimer()
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            if (!enableAllButton_)
+            if (!hideItemsTimer_.IsRunning)
             {
-                IActiveMenu menu = ActiveMenu.GetInstance(this);
-                for (int i = 0; i < menu.Items.Count; ++i)
-                {
-                    menu.Items[i].Show();
-                    menu.Items[i].Enabled = true;
-                }
-                enableAllButton_ = true;
+                return;
             }
-            counter_ = 2;
+
+            if (hideItemsTimer_.ElapsedMilliseconds < 2500)
+            {
+                return;
+            }
+
+            if (EnableAllButton)
+            {
+                EnableItems(false);
+                EnableAllButton = false;
+            }
+
+            hideItemsTimer_.Stop();
+            hideItemsTimer_.Reset();
         }
 
         private bool IsMouseEnter()
@@ -103,11 +109,22 @@ namespace bSoundMute.Forms
             return false;
         }
 
-        public void UpdateBtnDisplay()
+        private void EnableItems(bool enable)
         {
-            if (IsMouseEnter())
+            var menu = ActiveMenu.GetInstance(this);
+
+            for (var i = 0; i < menu.Items.Count; ++i)
             {
-                ActiveBtnAndStartTimer();
+                if (enable)
+                {
+                    menu.Items[i].Show();
+                }
+                else
+                {
+                    menu.Items[i].Hide();
+                }
+
+                menu.Items[i].Enabled = enable;
             }
         }
     }

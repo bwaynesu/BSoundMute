@@ -218,6 +218,10 @@ namespace bSoundMute.Controls
 
         private static ISimpleAudioVolume GetVolumeObject(int pid)
         {
+            // Skip invalid process IDs
+            if (pid == 0)
+                return null;
+
             IMMDeviceEnumerator deviceEnumerator = null;
             IMMDevice speakers = null;
             IAudioSessionManager2 mgr = null;
@@ -226,6 +230,9 @@ namespace bSoundMute.Controls
 
             try
             {
+                // Try to get the root process ID for better matching with audio sessions
+                var rootPid = Utils.ProcessHelper.GetRootProcessId(pid);
+
                 // get the speakers (1st render + multimedia) device
                 deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
                 if (deviceEnumerator == null)
@@ -249,19 +256,28 @@ namespace bSoundMute.Controls
 
                 sessionEnumerator.GetCount(out var count);
 
-                // search for an audio session with the required process ID
-                for (int i = 0; i < count; ++i)
+                // First pass: try to match exactly with process ID or root process ID
+                for (var i = 0; i < count; ++i)
                 {
                     IAudioSessionControl2 ctl = null;
+
                     try
                     {
                         sessionEnumerator.GetSession(i, out ctl);
-                        int cpid = int.MaxValue;
+
+                        var cpid = int.MaxValue;
+                        var cpRootId = int.MaxValue;
 
                         if (ctl != null)
+                        {
                             ctl.GetProcessId(out cpid);
+                            cpRootId = Utils.ProcessHelper.GetRootProcessId(cpid);
+                        }
 
-                        if (cpid == pid)
+                        // Check for exact match with original PID or root PID
+                        if (cpid == pid || 
+                            (rootPid != 0 && cpid == rootPid) ||
+                            (cpRootId != 0 && cpRootId == rootPid))
                         {
                             volumeControl = ctl as ISimpleAudioVolume;
                             return volumeControl; // Don't release ctl here as it's returned as volumeControl

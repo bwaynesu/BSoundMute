@@ -9,23 +9,21 @@ using System.Windows.Forms;
 
 namespace bSoundMute.Forms
 {
-    public class MainForm : System.Windows.Forms.Form
+    public class MainForm : Form
     {
-        private const int MOUSE_POLL_INTERVAL = 4; // Check mouse position only every 4 timer ticks
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label captionWindowLabel;
-        private System.Windows.Forms.Label IDWindowLabel;
-        private System.Windows.Forms.Label windowSizeLabel;
-        private System.Windows.Forms.Button exitButton;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label captionWindowLabel;
+        private Label IDWindowLabel;
+        private Label windowSizeLabel;
+        private Button exitButton;
         private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.IContainer components;
         private NotifyIcon notifyIcon1;
 
-        private IntPtr thisAppHandle_; // this application handle id
+        private IntPtr thisAppHandle_;
         private IntPtr handle_, preHandle_;
         private int applicationNameHash_;
         private StringBuilder buff_ = new StringBuilder(256);
@@ -40,12 +38,10 @@ namespace bSoundMute.Forms
         private Button okButton;
         private bool trulyExit_ = false;
         private AboutForm aboutForm_ = new AboutForm();
-        private Button setupButton;
         private Label label5;
         private Button Refreshbutton;
         private GlobalKeyboardHook gkh_ = new GlobalKeyboardHook();
         private bool isNotifyIconShowed_ = false;
-        private int mousePollCounter = 0;
 
         public MainForm()
         {
@@ -59,7 +55,7 @@ namespace bSoundMute.Forms
 
             var version = typeof(MainForm).Assembly.GetName().Version;
             versionValuelabel.Text = $"{version.Major}.{version.Minor}.{version.Build}";
-            copyrightValueLabel.Text = "© 2025 " + FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).CompanyName;
+            copyrightValueLabel.Text = "© 2015 " + FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).CompanyName;
 
             appForm_.Show();
         }
@@ -108,7 +104,6 @@ namespace bSoundMute.Forms
             label4 = new Label();
             notifyIcon1 = new NotifyIcon(components);
             pictureBox1 = new PictureBox();
-            setupButton = new Button();
             versionLabel = new Label();
             versionValuelabel = new Label();
             copyrightValueLabel = new Label();
@@ -120,7 +115,7 @@ namespace bSoundMute.Forms
             // 
             // label1
             // 
-            label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             label1.Location = new System.Drawing.Point(125, 7);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(174, 20);
@@ -211,17 +206,6 @@ namespace bSoundMute.Forms
             pictureBox1.TabStop = false;
             pictureBox1.Click += pictureBox1_Click;
             // 
-            // setupButton
-            // 
-            setupButton.FlatStyle = FlatStyle.System;
-            setupButton.Location = new System.Drawing.Point(176, 165);
-            setupButton.Name = "setupButton";
-            setupButton.Size = new System.Drawing.Size(69, 29);
-            setupButton.TabIndex = 10;
-            setupButton.Text = "SETUP";
-            setupButton.Visible = false;
-            setupButton.Click += setupbutton_Click;
-            // 
             // versionLabel
             // 
             versionLabel.Location = new System.Drawing.Point(3, 171);
@@ -289,7 +273,6 @@ namespace bSoundMute.Forms
             Controls.Add(copyrightValueLabel);
             Controls.Add(versionValuelabel);
             Controls.Add(versionLabel);
-            Controls.Add(setupButton);
             Controls.Add(pictureBox1);
             Controls.Add(windowSizeLabel);
             Controls.Add(label4);
@@ -341,44 +324,6 @@ namespace bSoundMute.Forms
             }
         }
 
-        // Not used
-        private void GetActiveWindow()
-        {
-            IntPtr handle;
-            buff_.Remove(0, buff_.Length);
-
-            handle = Win32.GetForegroundWindow();
-
-            if (Win32.GetWindowText((int)handle, buff_, 256) > 0)
-            {
-                // Avoid this application
-                if (buff_.ToString().GetHashCode() == applicationNameHash_)
-                    thisAppHandle_ = handle;
-
-                if ((int)handle != (int)thisAppHandle_)
-                {
-                    handle_ = handle;
-
-                    // Show information
-                    this.captionWindowLabel.Text = buff_.ToString();
-                    this.IDWindowLabel.Text = handle.ToString();
-                    if (Win32.GetWindowRect(handle_, out appRect_))
-                    {
-                        string tmpStr = appRect_.Top.ToString() + ", " + appRect_.Bottom.ToString() + ", " + appRect_.Left.ToString() + ", " + appRect_.Right.ToString();
-                        this.windowSizeLabel.Text = tmpStr;
-
-                        CalAndSetFormWindowPos(); // set window pos
-                    }
-
-                    if (preHandle_ != handle_)
-                    {
-                        appForm_.ActiveBtnAndStartTimer();
-                        preHandle_ = handle_;
-                    }
-                }
-            }
-        }
-
         private void CalAndSetFormWindowPos()
         {
             if (appRect_.Top != preAppRect_.Top || appRect_.Bottom != preAppRect_.Bottom || appRect_.Left != preAppRect_.Left || appRect_.Right != preAppRect_.Right)
@@ -412,16 +357,7 @@ namespace bSoundMute.Forms
 
         private void timer1_Tick(object sender, System.EventArgs e)
         {
-            // GetActiveWindow();
-
-            // Only check mouse position every MOUSE_POLL_INTERVAL timer ticks to reduce CPU usage
-            mousePollCounter++;
-            if (mousePollCounter >= MOUSE_POLL_INTERVAL)
-            {
-                GetApplicationMouseIsOver();
-                mousePollCounter = 0;
-            }
-
+            GetApplicationMouseIsOver();
             UpdateMuteIcon();
             appForm_.UpdateBtnDisplay();
             UpdateFrmSize();
@@ -487,8 +423,7 @@ namespace bSoundMute.Forms
             if (handle_ == IntPtr.Zero)
                 return;
 
-            uint pID;
-            Win32.GetWindowThreadProcessId(handle_, out pID);
+            Win32.GetWindowThreadProcessId(handle_, out var pID);
             bool? isMute = SoundController.GetApplicationMute((int)pID);
 
             if (pID == 0 || !isMute.HasValue)
@@ -496,18 +431,17 @@ namespace bSoundMute.Forms
                 scButton_.Image = Properties.Resources.mute;
                 scButton_.Enabled = false;
                 scButton_.Hide();
+
                 return;
             }
+
             if (!scButton_.Visible && appForm_.enableAllButton_)
             {
                 scButton_.Show();
                 scButton_.Enabled = true;
             }
 
-            if (isMute.HasValue && isMute == true)
-                scButton_.Image = Properties.Resources.mute;
-            else
-                scButton_.Image = Properties.Resources.unmute;
+            scButton_.Image = isMute.Value ? Properties.Resources.mute : Properties.Resources.unmute;
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -521,11 +455,6 @@ namespace bSoundMute.Forms
                 Win32.ShowWindow(this.Handle, Win32.SW_RESTORE);
                 this.Visible = true;
             }
-        }
-
-        private bool IsMouseEnterActiveArea()
-        {
-            return false;
         }
 
         public IntPtr GetApplicationMouseIsOver()
@@ -627,10 +556,6 @@ namespace bSoundMute.Forms
 
             // mute or unmute
             muteAction();
-        }
-
-        private void setupbutton_Click(object sender, EventArgs e)
-        {
         }
 
         private void ShowNotifyIconIfNeeded()

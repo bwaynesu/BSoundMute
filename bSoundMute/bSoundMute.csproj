@@ -25,7 +25,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Description>Independent Mute Software</Description>
-    <Copyright>Copyright © 2025 bwaynesu. All rights reserved</Copyright>
+    <Copyright>Copyright © 2015 bwaynesu. All rights reserved</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <WarningLevel>0</WarningLevel>

@@ -236,9 +236,8 @@ namespace bSoundMute.Controls
                     return null;
 
                 // activate the session manager. we need the enumerator
-                Guid IID_IAudioSessionManager2 = typeof(IAudioSessionManager2).GUID;
-                object o = null;
-                speakers.Activate(ref IID_IAudioSessionManager2, 0, IntPtr.Zero, out o);
+                var IID_IAudioSessionManager2 = typeof(IAudioSessionManager2).GUID;
+                speakers.Activate(ref IID_IAudioSessionManager2, 0, IntPtr.Zero, out var o);
                 mgr = (IAudioSessionManager2)o;
                 if (o == null || mgr == null)
                     return null;
@@ -248,11 +247,10 @@ namespace bSoundMute.Controls
                 if (sessionEnumerator == null)
                     return null;
 
-                int count;
-                sessionEnumerator.GetCount(out count);
+                sessionEnumerator.GetCount(out var count);
 
                 // search for an audio session with the required process ID
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     IAudioSessionControl2 ctl = null;
                     try

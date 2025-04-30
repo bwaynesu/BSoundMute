@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     public interface IActiveItems : IList<SoundControlButton>
     {

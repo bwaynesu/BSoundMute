@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     internal enum EDataFlow
     {

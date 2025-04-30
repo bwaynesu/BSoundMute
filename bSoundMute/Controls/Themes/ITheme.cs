@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace bSoundMute.Controls.Themes
+namespace BSoundMute.Controls.Themes
 {
     public interface ITheme
     {

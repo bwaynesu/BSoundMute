@@ -1,5 +1,5 @@
-﻿using bSoundMute.Controls.Themes;
-using bSoundMute.Utils;
+﻿using BSoundMute.Controls.Themes;
+using BSoundMute.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     internal class ActiveMenuImpl : Form, IActiveMenu
     {

@@ -1,10 +1,10 @@
-﻿using bSoundMute.Controls;
-using bSoundMute.Utils;
+﻿using BSoundMute.Controls;
+using BSoundMute.Utils;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace bSoundMute.Forms
+namespace BSoundMute.Forms
 {
     public partial class AppForm : Form
     {

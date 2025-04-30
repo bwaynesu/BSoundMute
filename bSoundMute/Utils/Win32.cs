@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace bSoundMute.Utils
+namespace BSoundMute.Utils
 {
     internal class Win32
     {

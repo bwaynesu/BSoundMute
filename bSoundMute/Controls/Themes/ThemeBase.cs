@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace bSoundMute.Controls.Themes
+namespace BSoundMute.Controls.Themes
 {
     internal class ThemeBase : ITheme
     {

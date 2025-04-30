@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     public static class ActiveMenu
     {

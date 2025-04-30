@@ -1,4 +1,4 @@
-﻿namespace bSoundMute.Forms
+﻿namespace BSoundMute.Forms
 {
   partial class AppForm
   {

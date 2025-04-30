@@ -1,10 +1,10 @@
-﻿using bSoundMute.Controls.Themes;
-using bSoundMute.Utils;
+﻿using BSoundMute.Controls.Themes;
+using BSoundMute.Utils;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     public class SoundControlButton : Button
     {

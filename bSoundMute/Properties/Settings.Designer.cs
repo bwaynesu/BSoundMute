@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace bSoundMute.Properties {
+namespace BSoundMute.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

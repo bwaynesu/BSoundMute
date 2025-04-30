@@ -1,6 +1,6 @@
-﻿using bSoundMute.Utils;
+﻿using BSoundMute.Utils;
 
-namespace bSoundMute.Controls
+namespace BSoundMute.Controls
 {
     internal class ActiveItemsImpl : ListWithEvents<SoundControlButton>, IActiveItems
     {

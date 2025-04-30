@@ -1,4 +1,4 @@
-﻿namespace bSoundMute.Forms
+﻿namespace BSoundMute.Forms
 {
   partial class AboutForm
   {
@@ -69,7 +69,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            BackColor = System.Drawing.Color.FromArgb(119, 196, 176);
             ClientSize = new System.Drawing.Size(226, 67);
             Controls.Add(linkLabel1);
             Controls.Add(label2);

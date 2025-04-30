@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace bSoundMute.Forms
+namespace BSoundMute.Forms
 {
     public partial class AboutForm : Form
     {

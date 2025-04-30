@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace bSoundMute.Properties {
+namespace BSoundMute.Properties {
     using System;
     
     

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace bSoundMute.Utils
+namespace BSoundMute.Utils
 {
     internal class ListModificationEventArgs : ListRangeEventArgs
     {

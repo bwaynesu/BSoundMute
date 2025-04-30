@@ -1,5 +1,5 @@
-﻿using bSoundMute.Controls;
-using bSoundMute.Utils;
+﻿using BSoundMute.Controls;
+using BSoundMute.Utils;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace bSoundMute.Forms
+namespace BSoundMute.Forms
 {
     public class MainForm : Form
     {
@@ -198,7 +198,7 @@ namespace bSoundMute.Forms
             // 
             pictureBox1.Cursor = Cursors.Hand;
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(360, 89);
+            pictureBox1.Location = new System.Drawing.Point(360, 97);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(66, 79);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -265,7 +265,7 @@ namespace bSoundMute.Forms
             // MainForm
             // 
             AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            BackColor = System.Drawing.Color.FromArgb(119, 196, 176);
             ClientSize = new System.Drawing.Size(442, 196);
             Controls.Add(Refreshbutton);
             Controls.Add(label5);

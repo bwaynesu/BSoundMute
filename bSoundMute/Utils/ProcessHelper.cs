@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace bSoundMute.Utils
+namespace BSoundMute.Utils
 {
     /// <summary>
     /// Helper class for process related operations

@@ -31,7 +31,7 @@
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bb.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\bb.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>7F9D2FC461242F7731C864EBB20E59E87CA3E624</ManifestCertificateThumbprint>
@@ -58,9 +58,14 @@
     <Compile Update="Controls\SoundControlButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bb.ico" />
+    <Content Include="Resources\bb.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
@@ -69,7 +74,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Resources\Ike_2.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Resources\unmute.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

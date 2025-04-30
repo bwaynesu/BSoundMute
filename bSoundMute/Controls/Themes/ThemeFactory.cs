@@ -1,7 +1,7 @@
-﻿using bSoundMute.Utils;
+﻿using BSoundMute.Utils;
 using System.Windows.Forms;
 
-namespace bSoundMute.Controls.Themes
+namespace BSoundMute.Controls.Themes
 {
     internal class ThemeFactory
     {

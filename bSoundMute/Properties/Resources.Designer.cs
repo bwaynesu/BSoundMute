@@ -39,7 +39,7 @@ namespace BSoundMute.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("bSoundMute.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BSoundMute.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,21 +61,11 @@ namespace BSoundMute.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon bb {
-            get {
-                object obj = ResourceManager.GetObject("bb", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap darkbg {
+        internal static System.Drawing.Bitmap clear_bg {
             get {
-                object obj = ResourceManager.GetObject("darkbg", resourceCulture);
+                object obj = ResourceManager.GetObject("clear_bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,29 +73,9 @@ namespace BSoundMute.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap frame_dark {
+        internal static System.Drawing.Bitmap hover_bg {
             get {
-                object obj = ResourceManager.GetObject("frame_dark", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap glowbg {
-            get {
-                object obj = ResourceManager.GetObject("glowbg", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ike_2 {
-            get {
-                object obj = ResourceManager.GetObject("Ike_2", resourceCulture);
+                object obj = ResourceManager.GetObject("hover_bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +93,9 @@ namespace BSoundMute.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap transbg {
+        internal static System.Drawing.Bitmap press_bg {
             get {
-                object obj = ResourceManager.GetObject("transbg", resourceCulture);
+                object obj = ResourceManager.GetObject("press_bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace BSoundMute.Controls
@@ -155,9 +154,6 @@ namespace BSoundMute.Controls
 
         private void TitleButtonSystemColorsChanged(object sender, EventArgs e)
         {
-            /*theme = themeFactory.GetTheme();
-            CalcSize();
-            OnPosition();*/
             Application.Restart();
             Process.GetCurrentProcess().Kill();
         }
@@ -167,8 +163,7 @@ namespace BSoundMute.Controls
             int left = 0;
             for (int i = (Items.Count - 1); i >= 0; i--)
             {
-                var button = (SoundControlButton)Items[i];
-                button.SetTheme(theme);
+                var button = Items[i];
                 button.Left = left;
                 left += Items[i].Width + theme.ButtonOffset.X;
                 button.Top = theme.ButtonOffset.Y;

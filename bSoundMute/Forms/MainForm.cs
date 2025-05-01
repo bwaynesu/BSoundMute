@@ -198,7 +198,7 @@ namespace BSoundMute.Forms
             // 
             pictureBox1.Cursor = Cursors.Hand;
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(360, 97);
+            pictureBox1.Location = new System.Drawing.Point(360, 102);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(66, 79);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -286,7 +286,6 @@ namespace BSoundMute.Forms
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainForm";
-            ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "BSoundMute";
             TopMost = true;

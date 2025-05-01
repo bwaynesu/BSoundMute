@@ -31,7 +31,7 @@
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\bb.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Ike.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>7F9D2FC461242F7731C864EBB20E59E87CA3E624</ManifestCertificateThumbprint>
@@ -52,7 +52,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
     <Authors>bwaynesu</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>Ike_2.png</PackageIcon>
+    <PackageIcon>Ike.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Controls\SoundControlButton.cs">
@@ -65,7 +65,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\bb.ico" />
+    <Content Include="Resources\Ike.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
@@ -76,12 +76,25 @@
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Resources\Ike.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Update="Resources\Ike_2.png">
       <Pack>True</Pack>

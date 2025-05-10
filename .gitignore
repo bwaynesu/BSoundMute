@@ -3,3 +3,5 @@ bSoundMute/bin
 bSoundMute/obj
 bSoundMute/Properties/PublishProfiles/FolderProfile.pubxml.user
 .vs
+.idea
+ProjectOverview.md

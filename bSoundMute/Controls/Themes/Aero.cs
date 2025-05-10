@@ -5,57 +5,54 @@ namespace BSoundMute.Controls.Themes
 {
     internal class Aero : ThemeBase
     {
-        private Size maxFrameBorder = Size.Empty;
-        private Size minFrameBorder = Size.Empty;
+        private Size _maxFrameBorder = Size.Empty;
+        private Size _minFrameBorder = Size.Empty;
 
         public Aero(Form form) : base(form)
         {
         }
 
-        public override Color BackColor
-        {
-            get { return Color.Transparent; }
-        }
+        public override Color BackColor => Color.Transparent;
 
         public override Size ControlBoxSize
         {
             get
             {
-                if (base.controlBoxSize == Size.Empty)
+                if (base._controlBoxSize == Size.Empty)
                 {
                     if (IsToolbar)
                     {
-                        if (form.ControlBox)
+                        if (_form.ControlBox)
                         {
-                            base.controlBoxSize = new Size(SystemButtonSize.Width, SystemButtonSize.Height);
+                            base._controlBoxSize = new Size(SystemButtonSize.Width, SystemButtonSize.Height);
                         }
                         else
                         {
-                            base.controlBoxSize = new Size(1, 0);
+                            base._controlBoxSize = new Size(1, 0);
                         }
                     }
                     else
                     {
-                        if (!form.MaximizeBox && !form.MinimizeBox && form.ControlBox)
+                        if (!_form.MaximizeBox && !_form.MinimizeBox && _form.ControlBox)
                         {
-                            if (form.HelpButton)
+                            if (_form.HelpButton)
                             {
-                                base.controlBoxSize = new Size((2 * SystemButtonSize.Width) + 7, SystemButtonSize.Height);
+                                base._controlBoxSize = new Size((2 * SystemButtonSize.Width) + 7, SystemButtonSize.Height);
                             }
                             else
                             {
-                                base.controlBoxSize = new Size((1 * SystemButtonSize.Width) + 13, SystemButtonSize.Height);
+                                base._controlBoxSize = new Size((1 * SystemButtonSize.Width) + 13, SystemButtonSize.Height);
                             }
                         }
                         else
                         {
                             int index;
-                            index = (form.ControlBox) ? 3 : 0;
-                            base.controlBoxSize = new Size(index * SystemButtonSize.Width, SystemButtonSize.Height);
+                            index = (_form.ControlBox) ? 3 : 0;
+                            base._controlBoxSize = new Size(index * SystemButtonSize.Width, SystemButtonSize.Height);
                         }
                     }
                 }
-                return base.controlBoxSize;
+                return base._controlBoxSize;
             }
         }
 
@@ -63,18 +60,18 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (base.buttonOffset == Point.Empty)
+                if (base._buttonOffset == Point.Empty)
                 {
                     if (IsToolbar)
                     {
-                        base.buttonOffset = new Point(3, 1);
+                        base._buttonOffset = new Point(3, 1);
                     }
                     else
                     {
-                        base.buttonOffset = new Point(0, -2);
+                        base._buttonOffset = new Point(0, -2);
                     }
                 }
-                return base.buttonOffset;
+                return base._buttonOffset;
             }
         }
 
@@ -82,63 +79,63 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (form.WindowState == FormWindowState.Maximized)
+                if (_form.WindowState == FormWindowState.Maximized)
                 {
-                    if (maxFrameBorder == Size.Empty)
+                    if (_maxFrameBorder == Size.Empty)
                     {
-                        switch (form.FormBorderStyle)
+                        switch (_form.FormBorderStyle)
                         {
                             case FormBorderStyle.FixedToolWindow:
-                                maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 8, -1);
+                                _maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 8, -1);
                                 break;
 
                             case FormBorderStyle.SizableToolWindow:
-                                maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 4);
+                                _maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 4);
                                 break;
 
                             case FormBorderStyle.Sizable:
-                                maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width + 2, 7);
+                                _maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width + 2, 7);
                                 break;
 
                             default:
-                                maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 2);
+                                _maxFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 2);
                                 break;
                         }
                     }
-                    return maxFrameBorder;
+                    return _maxFrameBorder;
                 }
                 else
                 {
-                    if (minFrameBorder == Size.Empty)
+                    if (_minFrameBorder == Size.Empty)
                     {
-                        switch (form.FormBorderStyle)
+                        switch (_form.FormBorderStyle)
                         {
                             case FormBorderStyle.FixedToolWindow:
-                                minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 8, -1);
+                                _minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 8, -1);
                                 break;
 
                             case FormBorderStyle.SizableToolWindow:
-                                minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 4);
+                                _minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 4);
                                 break;
 
                             case FormBorderStyle.Sizable:
-                                minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 1);
+                                _minFrameBorder = new Size(SystemInformation.FrameBorderSize.Width - 3, 1);
                                 break;
 
                             case FormBorderStyle.Fixed3D:
-                                minFrameBorder = new Size(SystemInformation.Border3DSize.Width, -4);
+                                _minFrameBorder = new Size(SystemInformation.Border3DSize.Width, -4);
                                 break;
 
                             case FormBorderStyle.FixedSingle:
-                                minFrameBorder = new Size(SystemInformation.Border3DSize.Width - 2, -4);
+                                _minFrameBorder = new Size(SystemInformation.Border3DSize.Width - 2, -4);
                                 break;
 
                             default:
-                                minFrameBorder = new Size(SystemInformation.Border3DSize.Width - 1, -4);
+                                _minFrameBorder = new Size(SystemInformation.Border3DSize.Width - 1, -4);
                                 break;
                         }
                     }
-                    return minFrameBorder;
+                    return _minFrameBorder;
                 }
             }
         }
@@ -147,24 +144,24 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (base.systemButtonSize == Size.Empty)
+                if (base._systemButtonSize == Size.Empty)
                 {
                     if (IsToolbar)
                     {
                         Size size = SystemInformation.SmallCaptionButtonSize;
                         size.Height += 2;
                         size.Width += 2;
-                        base.systemButtonSize = size;
+                        base._systemButtonSize = size;
                     }
                     else
                     {
                         Size size = SystemInformation.CaptionButtonSize;
                         size.Height += 1;
                         //size.Width -= 1;
-                        base.systemButtonSize = size;
+                        base._systemButtonSize = size;
                     }
                 }
-                return base.systemButtonSize;
+                return base._systemButtonSize;
             }
         }
     }

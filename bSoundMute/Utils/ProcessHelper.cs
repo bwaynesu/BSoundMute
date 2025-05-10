@@ -11,19 +11,19 @@ namespace BSoundMute.Utils
     internal static class ProcessHelper
     {
         // Maximum size of the cache
-        private static readonly int MaxCacheSize = 500;
+        private static readonly int s_maxCacheSize = 500;
 
         // Cache for parent process IDs to improve performance
-        private static Dictionary<int, int> _parentProcessCache = new Dictionary<int, int>();
+        private static Dictionary<int, int> s_parentProcessCache = [];
 
         // Cache for root process IDs to improve performance
-        private static Dictionary<int, int> _rootProcessCache = new Dictionary<int, int>();
+        private static Dictionary<int, int> s_rootProcessCache = [];
 
         // Cache expiration time
-        private static TimeSpan _cacheExpiration = TimeSpan.FromSeconds(30);
+        private static TimeSpan s_cacheExpiration = TimeSpan.FromSeconds(30);
 
         // Cache last update time
-        private static Dictionary<int, DateTime> _cacheUpdateTime = new Dictionary<int, DateTime>();
+        private static Dictionary<int, DateTime> s_cacheUpdateTime = [];
 
         /// <summary>
         /// Gets the parent process ID for a given process ID
@@ -32,17 +32,17 @@ namespace BSoundMute.Utils
         /// <returns>Parent process ID, or 0 if not found</returns>
         public static int GetParentProcessId(int processId)
         {
-            if (_parentProcessCache.Count > MaxCacheSize)
+            if (s_parentProcessCache.Count > s_maxCacheSize)
             {
                 ClearCache();
             }
 
             // Check cache first
-            if (_parentProcessCache.TryGetValue(processId, out int parentId))
+            if (s_parentProcessCache.TryGetValue(processId, out int parentId))
             {
                 // Check if cache is still valid
-                if (_cacheUpdateTime.TryGetValue(processId, out var updateTime) &&
-                    DateTime.Now - updateTime < _cacheExpiration)
+                if (s_cacheUpdateTime.TryGetValue(processId, out var updateTime) &&
+                    DateTime.Now - updateTime < s_cacheExpiration)
                 {
                     return parentId;
                 }
@@ -76,8 +76,8 @@ namespace BSoundMute.Utils
             }
 
             // Update cache
-            _parentProcessCache[processId] = result;
-            _cacheUpdateTime[processId] = DateTime.Now;
+            s_parentProcessCache[processId] = result;
+            s_cacheUpdateTime[processId] = DateTime.Now;
 
             return result;
         }
@@ -91,17 +91,17 @@ namespace BSoundMute.Utils
         /// <returns>The root process ID</returns>
         public static int GetRootProcessId(int processId)
         {
-            if (_rootProcessCache.Count > MaxCacheSize)
+            if (s_rootProcessCache.Count > s_maxCacheSize)
             {
                 ClearCache();
             }
 
             // Check cache first
-            if (_rootProcessCache.TryGetValue(processId, out var rootId))
+            if (s_rootProcessCache.TryGetValue(processId, out var rootId))
             {
                 // Check if cache is still valid
-                if (_cacheUpdateTime.TryGetValue(processId, out var updateTime) &&
-                    DateTime.Now - updateTime < _cacheExpiration)
+                if (s_cacheUpdateTime.TryGetValue(processId, out var updateTime) &&
+                    DateTime.Now - updateTime < s_cacheExpiration)
                 {
                     return rootId;
                 }
@@ -123,8 +123,8 @@ namespace BSoundMute.Utils
             }
 
             // Update cache
-            _rootProcessCache[processId] = currentPid;
-            _cacheUpdateTime[processId] = DateTime.Now;
+            s_rootProcessCache[processId] = currentPid;
+            s_cacheUpdateTime[processId] = DateTime.Now;
 
             return currentPid;
         }
@@ -134,9 +134,9 @@ namespace BSoundMute.Utils
         /// </summary>
         public static void ClearCache()
         {
-            _parentProcessCache.Clear();
-            _rootProcessCache.Clear();
-            _cacheUpdateTime.Clear();
+            s_parentProcessCache.Clear();
+            s_rootProcessCache.Clear();
+            s_cacheUpdateTime.Clear();
         }
 
         /// <summary>

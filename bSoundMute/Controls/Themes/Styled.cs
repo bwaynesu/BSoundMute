@@ -5,38 +5,34 @@ namespace BSoundMute.Controls.Themes
 {
     internal class Styled : ThemeBase
     {
-        public Styled(Form form)
-          : base(form)
+        public Styled(Form form) : base(form)
         {
         }
 
-        public override Color BackColor
-        {
-            get { return Color.Transparent; }
-        }
+        public override Color BackColor => Color.Transparent;
 
         public override Size SystemButtonSize
         {
             get
             {
-                if (base.systemButtonSize == Size.Empty)
+                if (base._systemButtonSize == Size.Empty)
                 {
                     if (IsToolbar)
                     {
                         Size size = base.SystemButtonSize;
                         size.Height += 2;
                         size.Width -= 1;
-                        base.systemButtonSize = size;
+                        base._systemButtonSize = size;
                     }
                     else
                     {
                         Size size = SystemInformation.CaptionButtonSize;
                         size.Height -= 2;
                         size.Width -= 2;
-                        base.systemButtonSize = size;
+                        base._systemButtonSize = size;
                     }
                 }
-                return base.systemButtonSize;
+                return base._systemButtonSize;
             }
         }
 
@@ -44,23 +40,23 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (base.frameBorder == Size.Empty)
+                if (base._frameBorder == Size.Empty)
                 {
-                    switch (form.FormBorderStyle)
+                    switch (_form.FormBorderStyle)
                     {
                         case FormBorderStyle.SizableToolWindow:
                         case FormBorderStyle.Sizable:
-                            base.frameBorder = new Size(SystemInformation.FrameBorderSize.Width + 1,
+                            base._frameBorder = new Size(SystemInformation.FrameBorderSize.Width + 1,
                                                         SystemInformation.FrameBorderSize.Height + 1);
                             break;
 
                         default:
-                            base.frameBorder = new Size(SystemInformation.Border3DSize.Width + 2,
+                            base._frameBorder = new Size(SystemInformation.Border3DSize.Width + 2,
                                                         SystemInformation.Border3DSize.Height + 2);
                             break;
                     }
                 }
-                return base.frameBorder;
+                return base._frameBorder;
             }
         }
     }

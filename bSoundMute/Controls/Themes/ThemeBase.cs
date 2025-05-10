@@ -6,30 +6,30 @@ namespace BSoundMute.Controls.Themes
 {
     internal class ThemeBase : ITheme
     {
-        protected Color backColor = Color.Empty;
-        protected Point buttonOffset = new Point(55, 0);
-        protected Size controlBoxSize = Size.Empty;
-        protected Form form;
-        protected Size frameBorder = Size.Empty;
-        protected bool? isDisplayed;
-        protected bool? isToolbar;
-        protected Size systemButtonSize = Size.Empty;
+        protected Color _backColor = Color.Empty;
+        protected Point _buttonOffset = new Point(55, 0);
+        protected Size _controlBoxSize = Size.Empty;
+        protected Form _form;
+        protected Size _frameBorder = Size.Empty;
+        protected bool? _isDisplayed;
+        protected bool? _isToolbar;
+        protected Size _systemButtonSize = Size.Empty;
 
         public ThemeBase(Form form)
         {
-            this.form = form;
+            this._form = form;
         }
 
         protected bool IsToolbar
         {
             get
             {
-                if (isToolbar == null)
+                if (_isToolbar == null)
                 {
-                    isToolbar = form.FormBorderStyle == FormBorderStyle.FixedToolWindow ||
-                                form.FormBorderStyle == FormBorderStyle.SizableToolWindow;
+                    _isToolbar = _form.FormBorderStyle == FormBorderStyle.FixedToolWindow ||
+                                _form.FormBorderStyle == FormBorderStyle.SizableToolWindow;
                 }
-                return (bool)isToolbar;
+                return (bool)_isToolbar;
             }
         }
 
@@ -39,11 +39,11 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (backColor == Color.Empty)
+                if (_backColor == Color.Empty)
                 {
-                    backColor = Color.FromKnownColor(KnownColor.Control);
+                    _backColor = Color.FromKnownColor(KnownColor.Control);
                 }
-                return backColor;
+                return _backColor;
             }
         }
 
@@ -59,72 +59,72 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (controlBoxSize == Size.Empty)
+                if (_controlBoxSize == Size.Empty)
                 {
                     if (IsToolbar)
                     {
-                        if (form.ControlBox)
+                        if (_form.ControlBox)
                         {
-                            controlBoxSize = new Size(SystemButtonSize.Width, SystemButtonSize.Height);
+                            _controlBoxSize = new Size(SystemButtonSize.Width, SystemButtonSize.Height);
                         }
                         else
                         {
-                            controlBoxSize = new Size(0, 0);
+                            _controlBoxSize = new Size(0, 0);
                         }
                     }
                     else
                     {
                         int index;
-                        if (!form.MaximizeBox && !form.MinimizeBox && form.ControlBox)
+                        if (!_form.MaximizeBox && !_form.MinimizeBox && _form.ControlBox)
                         {
-                            index = (form.HelpButton) ? 2 : 1;
+                            index = (_form.HelpButton) ? 2 : 1;
                         }
                         else
                         {
-                            index = (form.ControlBox) ? 3 : 0;
+                            index = (_form.ControlBox) ? 3 : 0;
                         }
-                        controlBoxSize = new Size(index * SystemButtonSize.Width, SystemButtonSize.Height);
+                        _controlBoxSize = new Size(index * SystemButtonSize.Width, SystemButtonSize.Height);
                     }
                 }
-                return controlBoxSize;
+                return _controlBoxSize;
             }
         }
 
         public virtual Point ButtonOffset
         {
-            get { return buttonOffset; }
+            get { return _buttonOffset; }
         }
 
         public virtual Size FrameBorder
         {
             get
             {
-                if (frameBorder == Size.Empty)
+                if (_frameBorder == Size.Empty)
                 {
-                    switch (form.FormBorderStyle)
+                    switch (_form.FormBorderStyle)
                     {
                         case FormBorderStyle.SizableToolWindow:
-                            frameBorder = new Size(SystemInformation.FrameBorderSize.Width + 2,
+                            _frameBorder = new Size(SystemInformation.FrameBorderSize.Width + 2,
                                                    SystemInformation.FrameBorderSize.Height + 2);
                             break;
 
                         case FormBorderStyle.Sizable:
-                            frameBorder = new Size(SystemInformation.FrameBorderSize.Width,
+                            _frameBorder = new Size(SystemInformation.FrameBorderSize.Width,
                                                    SystemInformation.FrameBorderSize.Height + 2);
                             break;
 
                         case FormBorderStyle.FixedToolWindow:
-                            frameBorder = new Size(SystemInformation.Border3DSize.Width + 3,
+                            _frameBorder = new Size(SystemInformation.Border3DSize.Width + 3,
                                                    SystemInformation.Border3DSize.Height + 3);
                             break;
 
                         default:
-                            frameBorder = new Size(SystemInformation.Border3DSize.Width + 1,
+                            _frameBorder = new Size(SystemInformation.Border3DSize.Width + 1,
                                                    SystemInformation.Border3DSize.Height + 3);
                             break;
                     }
                 }
-                return frameBorder;
+                return _frameBorder;
             }
         }
 
@@ -132,22 +132,22 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (systemButtonSize == Size.Empty)
+                if (_systemButtonSize == Size.Empty)
                 {
                     if (IsToolbar)
                     {
                         Size size = SystemInformation.ToolWindowCaptionButtonSize;
                         size.Height -= 4;
                         size.Width -= 1;
-                        systemButtonSize = size;
+                        _systemButtonSize = size;
                     }
                     else
                     {
-                        systemButtonSize = new Size(SystemInformation.CaptionButtonSize.Width,
+                        _systemButtonSize = new Size(SystemInformation.CaptionButtonSize.Width,
                                                     SystemInformation.CaptionHeight - 2 * Math.Max(SystemInformation.BorderSize.Height, SystemInformation.Border3DSize.Height) - 1);
                     }
                 }
-                return systemButtonSize;
+                return _systemButtonSize;
             }
         }
 

@@ -4,59 +4,6 @@ using System.Collections.Generic;
 
 namespace BSoundMute.Utils
 {
-    internal class ListModificationEventArgs : ListRangeEventArgs
-    {
-        private readonly ListModification modification;
-
-        public ListModificationEventArgs(ListModification modification, int startIndex, int count)
-          : base(startIndex, count)
-        {
-            this.modification = modification;
-        }
-
-        public ListModification Modification
-        {
-            get { return modification; }
-        }
-    }
-
-    internal class ListItemEventArgs : EventArgs
-    {
-        private readonly int itemIndex;
-
-        public ListItemEventArgs(int itemIndex)
-        {
-            this.itemIndex = itemIndex;
-        }
-
-        public int ItemIndex
-        {
-            get { return itemIndex; }
-        }
-    }
-
-    internal class ListRangeEventArgs : EventArgs
-    {
-        private readonly int count;
-        private readonly int startIndex;
-
-        public ListRangeEventArgs(int startIndex, int count)
-        {
-            this.startIndex = startIndex;
-            this.count = count;
-        }
-
-        public int StartIndex
-        {
-            get { return startIndex; }
-        }
-
-        public int Count
-        {
-            get { return count; }
-        }
-    }
-
     internal enum ListModification
     {
         /// <summary>
@@ -90,11 +37,64 @@ namespace BSoundMute.Utils
         RangeRemoved
     }
 
+    internal class ListModificationEventArgs : ListRangeEventArgs
+    {
+        private readonly ListModification _modification;
+
+        public ListModificationEventArgs(ListModification modification, int startIndex, int count)
+          : base(startIndex, count)
+        {
+            this._modification = modification;
+        }
+
+        public ListModification Modification
+        {
+            get { return _modification; }
+        }
+    }
+
+    internal class ListItemEventArgs : EventArgs
+    {
+        private readonly int _itemIndex;
+
+        public ListItemEventArgs(int itemIndex)
+        {
+            this._itemIndex = itemIndex;
+        }
+
+        public int ItemIndex
+        {
+            get { return _itemIndex; }
+        }
+    }
+
+    internal class ListRangeEventArgs : EventArgs
+    {
+        private readonly int _count;
+        private readonly int _startIndex;
+
+        public ListRangeEventArgs(int startIndex, int count)
+        {
+            this._startIndex = startIndex;
+            this._count = count;
+        }
+
+        public int StartIndex
+        {
+            get { return _startIndex; }
+        }
+
+        public int Count
+        {
+            get { return _count; }
+        }
+    }
+
     [Serializable]
     internal class ListWithEvents<T> : List<T>, IList<T>, IList
     {
-        private readonly object syncRoot = new object();
-        private bool suppressEvents;
+        private readonly object _syncRoot = new();
+        private bool _suppressEvents;
 
         public ListWithEvents()
         {
@@ -112,14 +112,14 @@ namespace BSoundMute.Utils
 
         protected bool EventsSuppressed
         {
-            get { return suppressEvents; }
+            get { return _suppressEvents; }
         }
 
         #region IList Members
 
         public object SyncRoot
         {
-            get { return syncRoot; }
+            get { return _syncRoot; }
         }
 
         int IList.Add(object value)
@@ -141,7 +141,7 @@ namespace BSoundMute.Utils
             get { return base[index]; }
             set
             {
-                lock (syncRoot)
+                lock (_syncRoot)
                 {
                     bool equal = false;
                     if (base[index] != null)
@@ -165,7 +165,7 @@ namespace BSoundMute.Utils
         public virtual new void Add(T item)
         {
             int count;
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 base.Add(item);
                 count = base.Count - 1;
@@ -175,7 +175,7 @@ namespace BSoundMute.Utils
 
         public virtual new void Clear()
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 base.Clear();
             }
@@ -184,7 +184,7 @@ namespace BSoundMute.Utils
 
         public virtual new void Insert(int index, T item)
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 base.Insert(index, item);
             }
@@ -195,7 +195,7 @@ namespace BSoundMute.Utils
         {
             bool result;
 
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 result = base.Remove(item);
             }
@@ -211,7 +211,7 @@ namespace BSoundMute.Utils
 
         public virtual new void RemoveAt(int index)
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 base.RemoveAt(index);
             }
@@ -236,7 +236,7 @@ namespace BSoundMute.Utils
 
         public virtual new void AddRange(IEnumerable<T> collection)
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 InsertRange(base.Count, collection);
             }
@@ -245,7 +245,7 @@ namespace BSoundMute.Utils
         public virtual new void InsertRange(int index, IEnumerable<T> collection)
         {
             int count;
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 base.InsertRange(index, collection);
                 count = base.Count - index;
@@ -257,7 +257,7 @@ namespace BSoundMute.Utils
         {
             int count;
 
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 count = base.RemoveAll(match);
             }
@@ -280,7 +280,7 @@ namespace BSoundMute.Utils
         public virtual new void RemoveRange(int index, int count)
         {
             int listCountOld, listCountNew;
-            lock (syncRoot)
+            lock (_syncRoot)
             {
                 listCountOld = base.Count;
                 base.RemoveRange(index, count);
@@ -304,17 +304,17 @@ namespace BSoundMute.Utils
 
         public void SuppressEvents()
         {
-            suppressEvents = true;
+            _suppressEvents = true;
         }
 
         public void ResumeEvents()
         {
-            suppressEvents = false;
+            _suppressEvents = false;
         }
 
         protected virtual void OnCleared(EventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -329,7 +329,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnCollectionModified(ListModificationEventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -342,7 +342,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnItemAdded(ListItemEventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -357,7 +357,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnItemModified(ListItemEventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -372,7 +372,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnItemRemoved(EventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -387,7 +387,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnRangeAdded(ListRangeEventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }
@@ -402,7 +402,7 @@ namespace BSoundMute.Utils
 
         protected virtual void OnRangeRemoved(EventArgs e)
         {
-            if (suppressEvents)
+            if (_suppressEvents)
             {
                 return;
             }

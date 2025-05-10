@@ -1,24 +1,29 @@
 ﻿namespace BSoundMute.Forms
 {
-  partial class AboutForm
-  {
-    /// <summary>
-    /// Required designer variable.
-    /// </summary>
-    private System.ComponentModel.IContainer components = null;
-
-    /// <summary>
-    /// Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing)
+    partial class AboutForm
     {
-      if (disposing && (components != null))
-      {
-        components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        private System.Windows.Forms.Label _authorLabel;
+        private System.Windows.Forms.Label _emailLabel;
+        private System.Windows.Forms.LinkLabel _emailLinkLabel;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
 
         #region Windows Form Designer generated code
 
@@ -28,42 +33,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new System.Windows.Forms.Label();
-            label2 = new System.Windows.Forms.Label();
-            linkLabel1 = new System.Windows.Forms.LinkLabel();
+            _authorLabel = new System.Windows.Forms.Label();
+            _emailLabel = new System.Windows.Forms.Label();
+            _emailLinkLabel = new System.Windows.Forms.LinkLabel();
             SuspendLayout();
             // 
-            // label1
+            // _authorLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(17, 14);
-            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(106, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Author:  bwaynesu";
+            _authorLabel.AutoSize = true;
+            _authorLabel.Location = new System.Drawing.Point(17, 14);
+            _authorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _authorLabel.Name = "_authorLabel";
+            _authorLabel.Size = new System.Drawing.Size(103, 15);
+            _authorLabel.TabIndex = 0;
+            _authorLabel.Text = "Author: bwaynesu";
             // 
-            // label2
+            // _emailLabel
             // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(17, 35);
-            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(42, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Email :";
+            _emailLabel.AutoSize = true;
+            _emailLabel.Location = new System.Drawing.Point(17, 35);
+            _emailLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _emailLabel.Name = "_emailLabel";
+            _emailLabel.Size = new System.Drawing.Size(42, 15);
+            _emailLabel.TabIndex = 1;
+            _emailLabel.Text = "Email: ";
             // 
-            // linkLabel1
+            // _emailLinkLabel
             // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new System.Drawing.Point(59, 35);
-            linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new System.Drawing.Size(150, 15);
-            linkLabel1.TabIndex = 2;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "bwaynesu.dev@gmail.com";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            _emailLinkLabel.AutoSize = true;
+            _emailLinkLabel.Location = new System.Drawing.Point(53, 35);
+            _emailLinkLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _emailLinkLabel.Name = "_emailLinkLabel";
+            _emailLinkLabel.Size = new System.Drawing.Size(150, 15);
+            _emailLinkLabel.TabIndex = 2;
+            _emailLinkLabel.TabStop = true;
+            _emailLinkLabel.Text = "bwaynesu.dev@gmail.com";
+            _emailLinkLabel.LinkClicked += OnEmailLinkClicked;
             // 
             // AboutForm
             // 
@@ -71,9 +76,9 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(119, 196, 176);
             ClientSize = new System.Drawing.Size(226, 67);
-            Controls.Add(linkLabel1);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(_emailLinkLabel);
+            Controls.Add(_emailLabel);
+            Controls.Add(_authorLabel);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Margin = new System.Windows.Forms.Padding(4);
             MaximizeBox = false;
@@ -90,9 +95,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.Label label2;
-    private System.Windows.Forms.LinkLabel linkLabel1;
-  }
+    }
 }

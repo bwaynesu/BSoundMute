@@ -1,82 +1,75 @@
-﻿using BSoundMute.Controls;
-using BSoundMute.Utils;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using BSoundMute.Controls;
+using BSoundMute.Utils;
 
 namespace BSoundMute.Forms
 {
     public class MainForm : Form
     {
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label captionWindowLabel;
-        private Label IDWindowLabel;
-        private Label windowSizeLabel;
-        private Button exitButton;
-        private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.IContainer components;
-        private NotifyIcon notifyIcon1;
 
-        private IntPtr thisAppHandle_;
-        private IntPtr handle_, preHandle_;
-        private int applicationNameHash_;
-        private StringBuilder buff_ = new StringBuilder(256);
-        private Win32.RECT preAppRect_;
-        private Win32.RECT appRect_;
-        private AppForm appForm_ = new AppForm();
-        private SoundControlButton scButton_ = new SoundControlButton();
-        private PictureBox pictureBox1;
-        private Label versionLabel;
-        private Label versionValuelabel;
-        private Label copyrightValueLabel;
-        private Button okButton;
-        private bool trulyExit_ = false;
-        private AboutForm aboutForm_ = new AboutForm();
-        private Label label5;
-        private Button Refreshbutton;
-        private GlobalKeyboardHook gkh_ = new GlobalKeyboardHook();
-        private bool isNotifyIconShowed_ = false;
+        private Label _titleLabel;
+        private Label _windowTitleLabel;
+        private Label _windowHandleLabel;
+        private Label _windowSizeValueLabel;
+        private Label _captionWindowLabel;
+        private Label _idWindowLabel;
+        private Label _windowSizeLabel;
+        private Button _exitButton;
+        private System.Windows.Forms.Timer _updateTimer;
+        private NotifyIcon _runBgNotifyIcon;
+        private IntPtr _thisAppHandle;
+        private IntPtr _handle;
+        private IntPtr _preHandle;
+        private int _applicationNameHash;
+        private StringBuilder _buff = new(256);
+        private Win32.RECT _preAppRect;
+        private Win32.RECT _appRect;
+        private AppForm _appForm = new();
+        private SoundControlButton _soundCtrlBtn = new();
+        private PictureBox _logoPictureBox;
+        private Label _versionLabel;
+        private Label _versionValuelabel;
+        private Label _copyrightValueLabel;
+        private Button _okButton;
+        private bool _needExit = false;
+        private AboutForm _aboutForm = new();
+        private Label _hotkeyLabel;
+        private Button _refreshBtn;
+        private GlobalKeyboardHook _globalKeyboardHook = new();
+        private bool _isNotifyIconShowed = false;
 
         public MainForm()
         {
             // Add mute button
-            AddButton(muteButton_Click);
+            AddButton(OnMuteButtonClick);
 
             InitializeComponent();
-            applicationNameHash_ = this.Text.GetHashCode();
+            _applicationNameHash = this.Text.GetHashCode();
 
             InitialGlobalHook();
 
             var version = typeof(MainForm).Assembly.GetName().Version;
-            versionValuelabel.Text = $"{version.Major}.{version.Minor}.{version.Build}";
-            copyrightValueLabel.Text = "© 2015 " + FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).CompanyName;
+            _versionValuelabel.Text = $"{version.Major}.{version.Minor}.{version.Build}";
+            _copyrightValueLabel.Text = "© 2015 " + FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).CompanyName;
 
-            appForm_.Show();
-        }
-
-        private void InitialGlobalHook()
-        {
-            gkh_.AddKey(Properties.Settings.Default.CombineKey1);
-            gkh_.AddKey(Properties.Settings.Default.CombineKey2);
-            gkh_.KeyDown += new KeyEventHandler(gkh_KeyDown);
-            gkh_.KeyUp += new KeyEventHandler(gkh_KeyUp);
+            _appForm.Show();
         }
 
         protected override void Dispose(bool disposing)
         {
             // Ensure keyboard hook is properly unhooked when application exits to prevent resource leaks
-            if (gkh_ != null)
+            if (_globalKeyboardHook != null)
             {
-                gkh_.unhook();
+                _globalKeyboardHook.unhook();
             }
 
-            notifyIcon1.Visible = false;
+            _runBgNotifyIcon.Visible = false;
             if (disposing)
             {
                 if (components != null)
@@ -87,220 +80,10 @@ namespace BSoundMute.Forms
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        private void InitializeComponent()
-        {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            captionWindowLabel = new Label();
-            IDWindowLabel = new Label();
-            exitButton = new Button();
-            timer1 = new System.Windows.Forms.Timer(components);
-            windowSizeLabel = new Label();
-            label4 = new Label();
-            notifyIcon1 = new NotifyIcon(components);
-            pictureBox1 = new PictureBox();
-            versionLabel = new Label();
-            versionValuelabel = new Label();
-            copyrightValueLabel = new Label();
-            okButton = new Button();
-            label5 = new Label();
-            Refreshbutton = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label1.Location = new System.Drawing.Point(125, 7);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(174, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Active Window Detail";
-            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            label2.Location = new System.Drawing.Point(19, 39);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(115, 20);
-            label2.TabIndex = 1;
-            label2.Text = "Window Title :";
-            // 
-            // label3
-            // 
-            label3.Location = new System.Drawing.Point(19, 64);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(115, 20);
-            label3.TabIndex = 3;
-            label3.Text = "Window Handle :";
-            // 
-            // captionWindowLabel
-            // 
-            captionWindowLabel.Location = new System.Drawing.Point(102, 39);
-            captionWindowLabel.Name = "captionWindowLabel";
-            captionWindowLabel.Size = new System.Drawing.Size(304, 20);
-            captionWindowLabel.TabIndex = 2;
-            // 
-            // IDWindowLabel
-            // 
-            IDWindowLabel.Location = new System.Drawing.Point(119, 64);
-            IDWindowLabel.Name = "IDWindowLabel";
-            IDWindowLabel.Size = new System.Drawing.Size(269, 20);
-            IDWindowLabel.TabIndex = 4;
-            // 
-            // exitButton
-            // 
-            exitButton.FlatStyle = FlatStyle.System;
-            exitButton.Location = new System.Drawing.Point(248, 130);
-            exitButton.Name = "exitButton";
-            exitButton.Size = new System.Drawing.Size(70, 29);
-            exitButton.TabIndex = 9;
-            exitButton.Text = "EXIT";
-            exitButton.Click += exitButton_Click;
-            // 
-            // timer1
-            // 
-            timer1.Enabled = true;
-            timer1.Interval = 250;
-            timer1.Tick += timer1_Tick;
-            // 
-            // windowSizeLabel
-            // 
-            windowSizeLabel.Location = new System.Drawing.Point(100, 89);
-            windowSizeLabel.Name = "windowSizeLabel";
-            windowSizeLabel.Size = new System.Drawing.Size(269, 20);
-            windowSizeLabel.TabIndex = 6;
-            // 
-            // label4
-            // 
-            label4.Location = new System.Drawing.Point(19, 89);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(115, 21);
-            label4.TabIndex = 5;
-            label4.Text = "Window Size :";
-            // 
-            // notifyIcon1
-            // 
-            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon1.BalloonTipText = "Program running in the background";
-            notifyIcon1.BalloonTipTitle = "BSoundMute";
-            notifyIcon1.Icon = (System.Drawing.Icon)resources.GetObject("notifyIcon1.Icon");
-            notifyIcon1.Visible = true;
-            notifyIcon1.MouseClick += notifyIcon1_MouseClick;
-            notifyIcon1.MouseDoubleClick += notifyIcon1_MouseClick;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Cursor = Cursors.Hand;
-            pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(360, 102);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(66, 79);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 8;
-            pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
-            // 
-            // versionLabel
-            // 
-            versionLabel.Location = new System.Drawing.Point(3, 171);
-            versionLabel.Name = "versionLabel";
-            versionLabel.Size = new System.Drawing.Size(66, 21);
-            versionLabel.TabIndex = 11;
-            versionLabel.Text = "Version : ";
-            versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // versionValuelabel
-            // 
-            versionValuelabel.Location = new System.Drawing.Point(50, 171);
-            versionValuelabel.Name = "versionValuelabel";
-            versionValuelabel.Size = new System.Drawing.Size(91, 21);
-            versionValuelabel.TabIndex = 12;
-            versionValuelabel.Text = "1.0.0.0";
-            versionValuelabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // copyrightValueLabel
-            // 
-            copyrightValueLabel.Location = new System.Drawing.Point(314, 171);
-            copyrightValueLabel.Name = "copyrightValueLabel";
-            copyrightValueLabel.Size = new System.Drawing.Size(125, 21);
-            copyrightValueLabel.TabIndex = 14;
-            copyrightValueLabel.Text = "© 2015 bwaynesu";
-            copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // okButton
-            // 
-            okButton.FlatStyle = FlatStyle.System;
-            okButton.Location = new System.Drawing.Point(104, 130);
-            okButton.Name = "okButton";
-            okButton.Size = new System.Drawing.Size(69, 29);
-            okButton.TabIndex = 7;
-            okButton.Text = "OK";
-            okButton.Click += okButton_Click;
-            // 
-            // label5
-            // 
-            label5.Location = new System.Drawing.Point(156, 171);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(105, 21);
-            label5.TabIndex = 13;
-            label5.Text = "Hotkeys : B + LCtrl";
-            label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Refreshbutton
-            // 
-            Refreshbutton.FlatStyle = FlatStyle.System;
-            Refreshbutton.Location = new System.Drawing.Point(176, 130);
-            Refreshbutton.Name = "Refreshbutton";
-            Refreshbutton.Size = new System.Drawing.Size(69, 29);
-            Refreshbutton.TabIndex = 8;
-            Refreshbutton.Text = "Refresh";
-            Refreshbutton.Click += Refreshbutton_Click;
-            // 
-            // MainForm
-            // 
-            AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            BackColor = System.Drawing.Color.FromArgb(119, 196, 176);
-            ClientSize = new System.Drawing.Size(442, 196);
-            Controls.Add(Refreshbutton);
-            Controls.Add(label5);
-            Controls.Add(okButton);
-            Controls.Add(copyrightValueLabel);
-            Controls.Add(versionValuelabel);
-            Controls.Add(versionLabel);
-            Controls.Add(pictureBox1);
-            Controls.Add(windowSizeLabel);
-            Controls.Add(label4);
-            Controls.Add(exitButton);
-            Controls.Add(IDWindowLabel);
-            Controls.Add(captionWindowLabel);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MaximizeBox = false;
-            Name = "MainForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "BSoundMute";
-            TopMost = true;
-            FormClosing += MainForm_FormClosing;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ResumeLayout(false);
-        }
-
-        #endregion Windows Form Designer generated code
-
         [STAThread]
         private static void Main()
         {
-            bool createdNew = true;
-            using (Mutex mutex = new Mutex(true, Application.ProductName, out createdNew))
+            using (Mutex mutex = new(true, Application.ProductName, out var createdNew))
             {
                 if (createdNew)
                 {
@@ -323,68 +106,258 @@ namespace BSoundMute.Forms
             }
         }
 
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            _titleLabel = new Label();
+            _windowTitleLabel = new Label();
+            _windowHandleLabel = new Label();
+            _captionWindowLabel = new Label();
+            _idWindowLabel = new Label();
+            _exitButton = new Button();
+            _updateTimer = new System.Windows.Forms.Timer(components);
+            _windowSizeLabel = new Label();
+            _windowSizeValueLabel = new Label();
+            _runBgNotifyIcon = new NotifyIcon(components);
+            _logoPictureBox = new PictureBox();
+            _versionLabel = new Label();
+            _versionValuelabel = new Label();
+            _copyrightValueLabel = new Label();
+            _okButton = new Button();
+            _hotkeyLabel = new Label();
+            _refreshBtn = new Button();
+            ((System.ComponentModel.ISupportInitialize)_logoPictureBox).BeginInit();
+            SuspendLayout();
+            // 
+            // _titleLabel
+            // 
+            _titleLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            _titleLabel.Location = new System.Drawing.Point(125, 7);
+            _titleLabel.Name = "_titleLabel";
+            _titleLabel.Size = new System.Drawing.Size(174, 20);
+            _titleLabel.TabIndex = 0;
+            _titleLabel.Text = "Active Window Detail";
+            _titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // _windowTitleLabel
+            // 
+            _windowTitleLabel.Location = new System.Drawing.Point(19, 39);
+            _windowTitleLabel.Name = "_windowTitleLabel";
+            _windowTitleLabel.Size = new System.Drawing.Size(115, 20);
+            _windowTitleLabel.TabIndex = 1;
+            _windowTitleLabel.Text = "Window Title :";
+            // 
+            // _windowHandleLabel
+            // 
+            _windowHandleLabel.Location = new System.Drawing.Point(19, 64);
+            _windowHandleLabel.Name = "_windowHandleLabel";
+            _windowHandleLabel.Size = new System.Drawing.Size(115, 20);
+            _windowHandleLabel.TabIndex = 3;
+            _windowHandleLabel.Text = "Window Handle :";
+            // 
+            // _captionWindowLabel
+            // 
+            _captionWindowLabel.Location = new System.Drawing.Point(102, 39);
+            _captionWindowLabel.Name = "_captionWindowLabel";
+            _captionWindowLabel.Size = new System.Drawing.Size(304, 20);
+            _captionWindowLabel.TabIndex = 2;
+            // 
+            // _idWindowLabel
+            // 
+            _idWindowLabel.Location = new System.Drawing.Point(119, 64);
+            _idWindowLabel.Name = "_idWindowLabel";
+            _idWindowLabel.Size = new System.Drawing.Size(269, 20);
+            _idWindowLabel.TabIndex = 4;
+            // 
+            // _exitButton
+            // 
+            _exitButton.FlatStyle = FlatStyle.System;
+            _exitButton.Location = new System.Drawing.Point(248, 130);
+            _exitButton.Name = "_exitButton";
+            _exitButton.Size = new System.Drawing.Size(70, 29);
+            _exitButton.TabIndex = 9;
+            _exitButton.Text = "EXIT";
+            _exitButton.Click += OnExitButtonClick;
+            // 
+            // _updateTimer
+            // 
+            _updateTimer.Enabled = true;
+            _updateTimer.Interval = 250;
+            _updateTimer.Tick += OnUpdateTimerTick;
+            // 
+            // _windowSizeLabel
+            // 
+            _windowSizeLabel.Location = new System.Drawing.Point(100, 89);
+            _windowSizeLabel.Name = "_windowSizeLabel";
+            _windowSizeLabel.Size = new System.Drawing.Size(269, 20);
+            _windowSizeLabel.TabIndex = 6;
+            // 
+            // _windowSizeValueLabel
+            // 
+            _windowSizeValueLabel.Location = new System.Drawing.Point(19, 89);
+            _windowSizeValueLabel.Name = "_windowSizeValueLabel";
+            _windowSizeValueLabel.Size = new System.Drawing.Size(115, 21);
+            _windowSizeValueLabel.TabIndex = 5;
+            _windowSizeValueLabel.Text = "Window Size :";
+            // 
+            // _runBgNotifyIcon
+            // 
+            _runBgNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            _runBgNotifyIcon.BalloonTipText = "Program running in the background";
+            _runBgNotifyIcon.BalloonTipTitle = "BSoundMute";
+            _runBgNotifyIcon.Icon = (System.Drawing.Icon)resources.GetObject("_runBgNotifyIcon.Icon");
+            _runBgNotifyIcon.Visible = true;
+            _runBgNotifyIcon.MouseClick += OnRunBgNotifyIconMouseClick;
+            _runBgNotifyIcon.MouseDoubleClick += OnRunBgNotifyIconMouseClick;
+            // 
+            // _logoPictureBox
+            // 
+            _logoPictureBox.Cursor = Cursors.Hand;
+            _logoPictureBox.Image = (System.Drawing.Image)resources.GetObject("_logoPictureBox.Image");
+            _logoPictureBox.Location = new System.Drawing.Point(360, 102);
+            _logoPictureBox.Name = "_logoPictureBox";
+            _logoPictureBox.Size = new System.Drawing.Size(66, 79);
+            _logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            _logoPictureBox.TabIndex = 8;
+            _logoPictureBox.TabStop = false;
+            _logoPictureBox.Click += OnlogoPictureBoxClick;
+            // 
+            // _versionLabel
+            // 
+            _versionLabel.Location = new System.Drawing.Point(3, 171);
+            _versionLabel.Name = "_versionLabel";
+            _versionLabel.Size = new System.Drawing.Size(66, 21);
+            _versionLabel.TabIndex = 11;
+            _versionLabel.Text = "Version : ";
+            _versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _versionValuelabel
+            // 
+            _versionValuelabel.Location = new System.Drawing.Point(50, 171);
+            _versionValuelabel.Name = "_versionValuelabel";
+            _versionValuelabel.Size = new System.Drawing.Size(91, 21);
+            _versionValuelabel.TabIndex = 12;
+            _versionValuelabel.Text = "1.0.0.0";
+            _versionValuelabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _copyrightValueLabel
+            // 
+            _copyrightValueLabel.Location = new System.Drawing.Point(314, 171);
+            _copyrightValueLabel.Name = "_copyrightValueLabel";
+            _copyrightValueLabel.Size = new System.Drawing.Size(125, 21);
+            _copyrightValueLabel.TabIndex = 14;
+            _copyrightValueLabel.Text = "© 2015 bwaynesu";
+            _copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _okButton
+            // 
+            _okButton.FlatStyle = FlatStyle.System;
+            _okButton.Location = new System.Drawing.Point(104, 130);
+            _okButton.Name = "_okButton";
+            _okButton.Size = new System.Drawing.Size(69, 29);
+            _okButton.TabIndex = 7;
+            _okButton.Text = "OK";
+            _okButton.Click += OnOkButtonClick;
+            // 
+            // _hotkeyLabel
+            // 
+            _hotkeyLabel.Location = new System.Drawing.Point(156, 171);
+            _hotkeyLabel.Name = "_hotkeyLabel";
+            _hotkeyLabel.Size = new System.Drawing.Size(105, 21);
+            _hotkeyLabel.TabIndex = 13;
+            _hotkeyLabel.Text = "Hotkey : B + LCtrl";
+            _hotkeyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // _refreshBtn
+            // 
+            _refreshBtn.FlatStyle = FlatStyle.System;
+            _refreshBtn.Location = new System.Drawing.Point(176, 130);
+            _refreshBtn.Name = "_refreshBtn";
+            _refreshBtn.Size = new System.Drawing.Size(69, 29);
+            _refreshBtn.TabIndex = 8;
+            _refreshBtn.Text = "Refresh";
+            _refreshBtn.Click += OnRefreshButtonClick;
+            // 
+            // MainForm
+            // 
+            AutoScaleBaseSize = new System.Drawing.Size(6, 16);
+            BackColor = System.Drawing.Color.FromArgb(119, 196, 176);
+            ClientSize = new System.Drawing.Size(442, 196);
+            Controls.Add(_refreshBtn);
+            Controls.Add(_hotkeyLabel);
+            Controls.Add(_okButton);
+            Controls.Add(_copyrightValueLabel);
+            Controls.Add(_versionValuelabel);
+            Controls.Add(_versionLabel);
+            Controls.Add(_logoPictureBox);
+            Controls.Add(_windowSizeLabel);
+            Controls.Add(_windowSizeValueLabel);
+            Controls.Add(_exitButton);
+            Controls.Add(_idWindowLabel);
+            Controls.Add(_captionWindowLabel);
+            Controls.Add(_windowHandleLabel);
+            Controls.Add(_windowTitleLabel);
+            Controls.Add(_titleLabel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "BSoundMute";
+            TopMost = true;
+            FormClosing += OnMainFormClosing;
+            ((System.ComponentModel.ISupportInitialize)_logoPictureBox).EndInit();
+            ResumeLayout(false);
+        }
+
+        #endregion Windows Form Designer generated code
+
+        private void InitialGlobalHook()
+        {
+            _globalKeyboardHook.AddKey(Properties.Settings.Default.CombineKey1);
+            _globalKeyboardHook.AddKey(Properties.Settings.Default.CombineKey2);
+            _globalKeyboardHook.KeyDown += new KeyEventHandler(OnGlobalKeyboardHookKeyDown);
+            _globalKeyboardHook.KeyUp += new KeyEventHandler(OnGlobalKeyboardHookKeyUp);
+        }
+
         private void CalAndSetFormWindowPos()
         {
-            if (appRect_.Top != preAppRect_.Top || appRect_.Bottom != preAppRect_.Bottom || appRect_.Left != preAppRect_.Left || appRect_.Right != preAppRect_.Right)
+            if (_appRect.Top != _preAppRect.Top || _appRect.Bottom != _preAppRect.Bottom || _appRect.Left != _preAppRect.Left || _appRect.Right != _preAppRect.Right)
             {
                 if (Win32.DwmIsCompositionEnabled || Application.RenderWithVisualStyles) // Not traditional theme
                 {
-                    if (appRect_.Right - 333 >= appRect_.Left)
+                    if (_appRect.Right - 333 >= _appRect.Left)
                     {
-                        Win32.SetWindowPos(appForm_.Handle, Win32.HWND_TOPMOST, appRect_.Right - 278, appRect_.Top + 5, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
+                        Win32.SetWindowPos(_appForm.Handle, Win32.HWND_TOPMOST, _appRect.Right - 278, _appRect.Top + 5, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
                     }
                     else
                     {
-                        Win32.SetWindowPos(appForm_.Handle, Win32.HWND_TOPMOST, appRect_.Left + 55, appRect_.Top + 5, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
+                        Win32.SetWindowPos(_appForm.Handle, Win32.HWND_TOPMOST, _appRect.Left + 55, _appRect.Top + 5, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
                     }
                 }
                 else
                 {
-                    if (appRect_.Right - 233 >= appRect_.Left)
+                    if (_appRect.Right - 233 >= _appRect.Left)
                     {
-                        Win32.SetWindowPos(appForm_.Handle, Win32.HWND_TOPMOST, appRect_.Right - 178, appRect_.Top, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
+                        Win32.SetWindowPos(_appForm.Handle, Win32.HWND_TOPMOST, _appRect.Right - 178, _appRect.Top, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
                     }
                     else
                     {
-                        Win32.SetWindowPos(appForm_.Handle, Win32.HWND_TOPMOST, appRect_.Left + 55, appRect_.Top, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
+                        Win32.SetWindowPos(_appForm.Handle, Win32.HWND_TOPMOST, _appRect.Left + 55, _appRect.Top, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
                     }
                 }
 
-                preAppRect_ = appRect_;
+                _preAppRect = _appRect;
             }
         }
 
-        private void timer1_Tick(object sender, System.EventArgs e)
+        private void MuteAction()
         {
-            GetApplicationMouseIsOver();
-            UpdateMuteIcon();
-            appForm_.UpdateBtnDisplay();
-            UpdateFrmSize();
-        }
-
-        private void exitButton_Click(object sender, System.EventArgs e)
-        {
-            trulyExit_ = true;
-            this.Close();
-        }
-
-        private void muteButton_Click(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                notifyIcon1_MouseClick(sender, e);
-            }
-            else
-            {
-                muteAction();
-            }
-        }
-
-        private void muteAction()
-        {
-            uint pID;
-            Win32.GetWindowThreadProcessId(handle_, out pID);
-            bool? isMute = SoundController.GetApplicationMute((int)pID);
+            Win32.GetWindowThreadProcessId(_handle, out var pID);
+            var isMute = SoundController.GetApplicationMute((int)pID);
 
             if (pID == 0 || !isMute.HasValue)
                 return;
@@ -392,7 +365,7 @@ namespace BSoundMute.Forms
             SoundController.SetApplicationMute((int)pID, !((bool)isMute));
 
             // focus process back
-            Win32.SetWindowPos(handle_, new IntPtr(0), 0, 0, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_NOMOVE | Win32.SWP_SHOWWINDOW);
+            Win32.SetWindowPos(_handle, new IntPtr(0), 0, 0, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_NOMOVE | Win32.SWP_SHOWWINDOW);
         }
 
         private void UpdateFrmSize()
@@ -407,43 +380,144 @@ namespace BSoundMute.Forms
         {
             // get an instance of IActiveMenu used to attach
             // buttons to the form
-            IActiveMenu menu = ActiveMenu.GetInstance(appForm_);
+            IActiveMenu menu = ActiveMenu.GetInstance(_appForm);
 
             // define a new button
-            menu.ToolTip.SetToolTip(scButton_, "Mute");
-            scButton_.MouseUp += handler;
+            menu.ToolTip.SetToolTip(_soundCtrlBtn, "Mute");
+            _soundCtrlBtn.MouseUp += handler;
 
             // add the button to the menu
-            menu.Items.Add(scButton_);
+            menu.Items.Add(_soundCtrlBtn);
         }
 
         private void UpdateMuteIcon()
         {
-            if (handle_ == IntPtr.Zero)
+            if (_handle == IntPtr.Zero)
+            {
                 return;
+            }
 
-            Win32.GetWindowThreadProcessId(handle_, out var pID);
-            bool? isMute = SoundController.GetApplicationMute((int)pID);
+            Win32.GetWindowThreadProcessId(_handle, out var pID);
+            var isMute = SoundController.GetApplicationMute((int)pID);
 
             if (pID == 0 || !isMute.HasValue)
             {
-                scButton_.Image = Properties.Resources.mute;
-                scButton_.Enabled = false;
-                scButton_.Hide();
+                _soundCtrlBtn.Image = Properties.Resources.mute;
+                _soundCtrlBtn.Enabled = false;
+                _soundCtrlBtn.Hide();
 
                 return;
             }
 
-            if (!scButton_.Visible && appForm_.EnableAllButton)
+            if (!_soundCtrlBtn.Visible && _appForm.EnableAllButton)
             {
-                scButton_.Show();
-                scButton_.Enabled = true;
+                _soundCtrlBtn.Show();
+                _soundCtrlBtn.Enabled = true;
             }
 
-            scButton_.Image = isMute.Value ? Properties.Resources.mute : Properties.Resources.unmute;
+            _soundCtrlBtn.Image = isMute.Value ? Properties.Resources.mute : Properties.Resources.unmute;
         }
 
-        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        private IntPtr GetApplicationMouseIsOver()
+        {
+            Win32.POINT location;
+            Win32.GetCursorPos(out location);
+
+            IntPtr handle = Win32.WindowFromPoint(location);
+            IntPtr windowParent = IntPtr.Zero;
+            _buff.Remove(0, _buff.Length);
+
+            while (handle != IntPtr.Zero)
+            {
+                windowParent = handle;
+                handle = Win32.GetParent(handle);
+            }
+
+            handle = windowParent;
+
+            if (Win32.GetWindowText((int)handle, _buff, 256) > 0)
+            {
+                // Avoid this application
+                if (_buff.ToString().GetHashCode() == _applicationNameHash)
+                    _thisAppHandle = handle;
+
+                if ((int)handle != (int)_thisAppHandle)
+                {
+                    this._handle = handle;
+
+                    // Show information
+                    this._captionWindowLabel.Text = _buff.ToString();
+                    this._idWindowLabel.Text = handle.ToString();
+
+                    if (Win32.GetWindowRect(this._handle, out _appRect))
+                    {
+                        string tmpStr = _appRect.Top.ToString() + ", " + _appRect.Bottom.ToString() + ", " + _appRect.Left.ToString() + ", " + _appRect.Right.ToString();
+                        this._windowSizeLabel.Text = tmpStr;
+
+                        CalAndSetFormWindowPos(); // set window pos
+                    }
+
+                    if (_preHandle != this._handle)
+                    {
+                        _appForm.ActiveBtnAndStartTimer();
+                        _preHandle = this._handle;
+                    }
+                }
+            }
+
+            return this._handle;
+        }
+
+        private void ShowNotifyIconIfNeeded()
+        {
+            if (!_isNotifyIconShowed)
+            {
+                _runBgNotifyIcon.ShowBalloonTip(2000);
+                _isNotifyIconShowed = true;
+            }
+        }
+
+        private void OnMainFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_needExit)
+            {
+                _runBgNotifyIcon.Visible = false;
+            }
+            else
+            {
+                e.Cancel = true;
+                this.Hide();
+                ShowNotifyIconIfNeeded();
+            }
+        }
+
+        private void OnUpdateTimerTick(object sender, System.EventArgs e)
+        {
+            GetApplicationMouseIsOver();
+            UpdateMuteIcon();
+            _appForm.UpdateBtnDisplay();
+            UpdateFrmSize();
+        }
+
+        private void OnExitButtonClick(object sender, System.EventArgs e)
+        {
+            _needExit = true;
+            this.Close();
+        }
+
+        private void OnMuteButtonClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                OnRunBgNotifyIconMouseClick(sender, e);
+            }
+            else
+            {
+                MuteAction();
+            }
+        }
+
+        private void OnRunBgNotifyIconMouseClick(object sender, MouseEventArgs e)
         {
             if (this.Visible)
             {
@@ -456,96 +530,29 @@ namespace BSoundMute.Forms
             }
         }
 
-        public IntPtr GetApplicationMouseIsOver()
+        private void OnRefreshButtonClick(object sender, EventArgs e)
         {
-            Win32.POINT location;
-            Win32.GetCursorPos(out location);
-
-            IntPtr handle = Win32.WindowFromPoint(location);
-            IntPtr windowParent = IntPtr.Zero;
-            buff_.Remove(0, buff_.Length);
-
-            while (handle != IntPtr.Zero)
-            {
-                windowParent = handle;
-                handle = Win32.GetParent(handle);
-            }
-            handle = windowParent;
-
-            if (Win32.GetWindowText((int)handle, buff_, 256) > 0)
-            {
-                // Avoid this application
-                if (buff_.ToString().GetHashCode() == applicationNameHash_)
-                    thisAppHandle_ = handle;
-
-                if ((int)handle != (int)thisAppHandle_)
-                {
-                    handle_ = handle;
-
-                    // Show information
-                    this.captionWindowLabel.Text = buff_.ToString();
-                    this.IDWindowLabel.Text = handle.ToString();
-                    if (Win32.GetWindowRect(handle_, out appRect_))
-                    {
-                        string tmpStr = appRect_.Top.ToString() + ", " + appRect_.Bottom.ToString() + ", " + appRect_.Left.ToString() + ", " + appRect_.Right.ToString();
-                        this.windowSizeLabel.Text = tmpStr;
-
-                        CalAndSetFormWindowPos(); // set window pos
-                    }
-
-                    if (preHandle_ != handle_)
-                    {
-                        appForm_.ActiveBtnAndStartTimer();
-                        preHandle_ = handle_;
-                    }
-                }
-            }
-
-            return handle_;
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (trulyExit_)
-            {
-                notifyIcon1.Visible = false;
-            }
-            else
-            {
-                e.Cancel = true;
-                this.Hide();
-                ShowNotifyIconIfNeeded();
-            }
-        }
-
-        private void Refreshbutton_Click(object sender, EventArgs e)
-        {
-            trulyExit_ = true;
+            _needExit = true;
             Application.Restart();
             Process.GetCurrentProcess().Kill();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void OnlogoPictureBoxClick(object sender, EventArgs e)
         {
-            aboutForm_.Show();
+            _aboutForm.Show();
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OnOkButtonClick(object sender, EventArgs e)
         {
             this.Hide();
             ShowNotifyIconIfNeeded();
         }
 
-        private void gkh_KeyUp(object sender, KeyEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void gkh_KeyDown(object sender, KeyEventArgs e)
+        private void OnGlobalKeyboardHookKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
 
-            foreach (bool state in gkh_.HookedKeysState)
+            foreach (bool state in _globalKeyboardHook.HookedKeysState)
             {
                 if (state == false)
                 {
@@ -554,16 +561,12 @@ namespace BSoundMute.Forms
             }
 
             // mute or unmute
-            muteAction();
+            MuteAction();
         }
 
-        private void ShowNotifyIconIfNeeded()
+        private void OnGlobalKeyboardHookKeyUp(object sender, KeyEventArgs e)
         {
-            if (!isNotifyIconShowed_)
-            {
-                notifyIcon1.ShowBalloonTip(2000);
-                isNotifyIconShowed_ = true;
-            }
+            e.Handled = true;
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using BSoundMute.Controls.Themes;
-using BSoundMute.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using BSoundMute.Controls.Themes;
+using BSoundMute.Utils;
 
 namespace BSoundMute.Controls
 {
@@ -17,41 +17,42 @@ namespace BSoundMute.Controls
             IncreaseSize
         }
 
-        public IActiveItems Items
-        {
-            get { return items; }
-        }
+        private static readonly Dictionary<Form, IActiveMenu> s_parents;
+
+        private readonly IContainer _components;
+        private readonly ActiveItemsImpl _items;
+        private readonly Size _originalMinSize;
+        private readonly Form _parentForm;
+        private readonly SpillOverMode _spillOverMode;
+        private readonly ThemeFactory _themeFactory;
+
+        private int _containerMaxWidth;
+        private bool _isActivated;
+        private ITheme _theme;
+        private ToolTip _tooltip;
+
+        public IActiveItems Items => _items;
 
         public ToolTip ToolTip
         {
-            get { return tooltip ?? (tooltip = new ToolTip()); }
-            set { tooltip = value; }
+            get { return _tooltip ??= new ToolTip(); }
+            set { _tooltip = value; }
         }
-
-        private static readonly Dictionary<Form, IActiveMenu> parents;
-        private readonly IContainer components;
-        private readonly ActiveItemsImpl items;
-        private readonly Size originalMinSize;
-        private readonly Form parentForm;
-        private readonly SpillOverMode spillOverMode;
-        private readonly ThemeFactory themeFactory;
-        private int containerMaxWidth;
-        private bool isActivated;
-        private ITheme theme;
-        private ToolTip tooltip;
 
         public static IActiveMenu GetInstance(Form form)
         {
-            if (!parents.ContainsKey(form))
+            if (!s_parents.TryGetValue(form, out IActiveMenu value))
             {
-                parents.Add(form, new ActiveMenuImpl(form));
+                value = new ActiveMenuImpl(form);
+                s_parents.Add(form, value);
             }
-            return parents[form];
+
+            return value;
         }
 
         static ActiveMenuImpl()
         {
-            parents = new Dictionary<Form, IActiveMenu>();
+            s_parents = [];
         }
 
         private ActiveMenuImpl(Form form)
@@ -62,20 +63,20 @@ namespace BSoundMute.Controls
             FormBorderStyle = FormBorderStyle.None;
             SizeGripStyle = SizeGripStyle.Hide;
 
-            items = new ActiveItemsImpl();
-            items.CollectionModified += ItemsCollectionModified;
-            parentForm = form;
+            _items = new ActiveItemsImpl();
+            _items.CollectionModified += ItemsCollectionModified;
+            _parentForm = form;
             Show(form);
-            parentForm.Disposed += ParentFormDisposed;
+            _parentForm.Disposed += ParentFormDisposed;
             Visible = false;
-            isActivated = form.WindowState != FormWindowState.Minimized;
-            themeFactory = new ThemeFactory(form);
-            theme = themeFactory.GetTheme();
-            originalMinSize = form.MinimumSize;
+            _isActivated = form.WindowState != FormWindowState.Minimized;
+            _themeFactory = new ThemeFactory(form);
+            _theme = _themeFactory.GetTheme();
+            _originalMinSize = form.MinimumSize;
             AttachHandlers();
             ToolTip.ShowAlways = true;
             TopMost = false;
-            spillOverMode = SpillOverMode.IncreaseSize;
+            _spillOverMode = SpillOverMode.IncreaseSize;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -115,20 +116,21 @@ namespace BSoundMute.Controls
             {
                 return;
             }
-            if (parents.ContainsKey(form))
+            if (s_parents.ContainsKey(form))
             {
-                parents.Remove(form);
+                s_parents.Remove(form);
             }
         }
 
         protected void AttachHandlers()
         {
-            parentForm.Deactivate += ParentFormDeactivate;
-            parentForm.Activated += ParentFormActivated;
-            parentForm.SizeChanged += ParentRefresh;
-            parentForm.VisibleChanged += ParentRefresh;
-            parentForm.Move += ParentRefresh;
-            parentForm.SystemColorsChanged += TitleButtonSystemColorsChanged;
+            _parentForm.Deactivate += ParentFormDeactivate;
+            _parentForm.Activated += ParentFormActivated;
+            _parentForm.SizeChanged += ParentRefresh;
+            _parentForm.VisibleChanged += ParentRefresh;
+            _parentForm.Move += ParentRefresh;
+            _parentForm.SystemColorsChanged += TitleButtonSystemColorsChanged;
+
             // used to mask the menu control behind the buttons.
             if (Win32.DwmIsCompositionEnabled)
             {
@@ -164,58 +166,63 @@ namespace BSoundMute.Controls
             for (int i = (Items.Count - 1); i >= 0; i--)
             {
                 var button = Items[i];
+
                 button.Left = left;
-                left += Items[i].Width + theme.ButtonOffset.X;
-                button.Top = theme.ButtonOffset.Y;
+                left += Items[i].Width + _theme.ButtonOffset.X;
+                button.Top = _theme.ButtonOffset.Y;
             }
-            containerMaxWidth = left;
+            _containerMaxWidth = left;
 
-            if (spillOverMode == SpillOverMode.IncreaseSize)
+            if (_spillOverMode == SpillOverMode.IncreaseSize)
             {
-                int w = containerMaxWidth + theme.ControlBoxSize.Width + theme.FrameBorder.Width +
-                        theme.FrameBorder.Width;
+                int w =
+                    _containerMaxWidth +
+                    _theme.ControlBoxSize.Width +
+                    _theme.FrameBorder.Width +
+                    _theme.FrameBorder.Width;
 
-                parentForm.MinimumSize = originalMinSize;
+                _parentForm.MinimumSize = _originalMinSize;
 
-                if (parentForm.MinimumSize.Width <= w)
+                if (_parentForm.MinimumSize.Width <= w)
                 {
-                    parentForm.MinimumSize = new Size(w, parentForm.MinimumSize.Height);
+                    _parentForm.MinimumSize = new Size(w, _parentForm.MinimumSize.Height);
                 }
             }
         }
 
         protected void ParentRefresh(object sender, EventArgs e)
         {
-            if (parentForm.WindowState == FormWindowState.Minimized)
+            if (_parentForm.WindowState == FormWindowState.Minimized)
             {
-                isActivated = false;
+                _isActivated = false;
                 Visible = false;
             }
             else
             {
-                isActivated = true;
+                _isActivated = true;
                 OnPosition();
             }
-            Win32.SetWindowPos(parentForm.Handle, Win32.HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
+
+            Win32.SetWindowPos(_parentForm.Handle, Win32.HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE | Win32.SWP_SHOWWINDOW);
         }
 
         private void OnPosition()
         {
             if (!IsDisposed)
             {
-                if (theme == null || !theme.IsDisplayed)
+                if (_theme == null || !_theme.IsDisplayed)
                 {
                     Visible = false;
                     return;
                 }
 
-                int top = theme.FrameBorder.Height;
-                int left = theme.FrameBorder.Width + theme.ControlBoxSize.Width;
+                int top = _theme.FrameBorder.Height;
+                int left = _theme.FrameBorder.Width + _theme.ControlBoxSize.Width;
 
-                Top = top + parentForm.Top;
-                Left = parentForm.Left + parentForm.Width - containerMaxWidth - left;
+                Top = top + _parentForm.Top;
+                Left = _parentForm.Left + _parentForm.Width - _containerMaxWidth - left;
 
-                Visible = theme.IsDisplayed && isActivated;
+                Visible = _theme.IsDisplayed && _isActivated;
 
                 if (Visible)
                 {
@@ -223,10 +230,10 @@ namespace BSoundMute.Controls
                     {
                         if (Win32.DwmIsCompositionEnabled || (Application.RenderWithVisualStyles && Win32.version > 6)) // traditional and standard theme don't have opacity
                         {
-                            Opacity = parentForm.Opacity;
-                            if (parentForm.Visible)
+                            Opacity = _parentForm.Opacity;
+                            if (_parentForm.Visible)
                             {
-                                Opacity = parentForm.Opacity;
+                                Opacity = _parentForm.Opacity;
                             }
                             else
                             {
@@ -234,11 +241,12 @@ namespace BSoundMute.Controls
                             }
                         }
                     }
-                    if (spillOverMode == SpillOverMode.Hide)
+
+                    if (_spillOverMode == SpillOverMode.Hide)
                     {
                         foreach (SoundControlButton b in Items)
                         {
-                            if (b.Left + Left - theme.FrameBorder.Width + 2 < parentForm.Left)
+                            if (b.Left + Left - _theme.FrameBorder.Width + 2 < _parentForm.Left)
                             {
                                 b.Visible = false;
                             }
@@ -254,10 +262,11 @@ namespace BSoundMute.Controls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (_components != null))
             {
-                components.Dispose();
+                _components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

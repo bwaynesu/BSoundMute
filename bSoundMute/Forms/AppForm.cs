@@ -1,14 +1,14 @@
-﻿using BSoundMute.Controls;
-using BSoundMute.Utils;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using BSoundMute.Controls;
+using BSoundMute.Utils;
 
 namespace BSoundMute.Forms
 {
     public partial class AppForm : Form
     {
-        private readonly Stopwatch hideItemsTimer_ = new Stopwatch();
+        private readonly Stopwatch _hideItemsTimer = new();
 
         public bool EnableAllButton { get; private set; } = true;
 
@@ -63,7 +63,7 @@ namespace BSoundMute.Forms
                 EnableAllButton = true;
             }
 
-            hideItemsTimer_.Restart();
+            _hideItemsTimer.Restart();
         }
 
         public void UpdateBtnDisplay()
@@ -72,28 +72,6 @@ namespace BSoundMute.Forms
             {
                 ActiveBtnAndStartTimer();
             }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (!hideItemsTimer_.IsRunning)
-            {
-                return;
-            }
-
-            if (hideItemsTimer_.ElapsedMilliseconds < 2500)
-            {
-                return;
-            }
-
-            if (EnableAllButton)
-            {
-                EnableItems(false);
-                EnableAllButton = false;
-            }
-
-            hideItemsTimer_.Stop();
-            hideItemsTimer_.Reset();
         }
 
         private bool IsMouseEnter()
@@ -126,6 +104,28 @@ namespace BSoundMute.Forms
 
                 menu.Items[i].Enabled = enable;
             }
+        }
+
+        private void OnUpdateTimerTick(object sender, EventArgs e)
+        {
+            if (!_hideItemsTimer.IsRunning)
+            {
+                return;
+            }
+
+            if (_hideItemsTimer.ElapsedMilliseconds < 2500)
+            {
+                return;
+            }
+
+            if (EnableAllButton)
+            {
+                EnableItems(false);
+                EnableAllButton = false;
+            }
+
+            _hideItemsTimer.Stop();
+            _hideItemsTimer.Reset();
         }
     }
 }

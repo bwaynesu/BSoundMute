@@ -5,8 +5,7 @@ namespace BSoundMute.Controls.Themes
 {
     internal class XPStyle : Styled
     {
-        public XPStyle(Form form)
-          : base(form)
+        public XPStyle(Form form) : base(form)
         {
         }
 
@@ -14,11 +13,11 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (base.backColor == Color.Empty)
+                if (base._backColor == Color.Empty)
                 {
-                    base.backColor = Color.FromKnownColor(KnownColor.ActiveBorder);
+                    base._backColor = Color.FromKnownColor(KnownColor.ActiveBorder);
                 }
-                return base.backColor;
+                return base._backColor;
             }
         }
 
@@ -26,11 +25,11 @@ namespace BSoundMute.Controls.Themes
         {
             get
             {
-                if (base.frameBorder == Size.Empty)
+                if (base._frameBorder == Size.Empty)
                 {
-                    base.frameBorder = new Size(base.FrameBorder.Width + 2, base.FrameBorder.Height);
+                    base._frameBorder = new Size(base.FrameBorder.Width + 2, base.FrameBorder.Height);
                 }
-                return base.frameBorder;
+                return base._frameBorder;
             }
         }
     }

@@ -5,11 +5,11 @@ namespace BSoundMute.Controls.Themes
 {
     internal class ThemeFactory
     {
-        private readonly Form form;
+        private readonly Form _form;
 
         public ThemeFactory(Form form)
         {
-            this.form = form;
+            this._form = form;
         }
 
         public ITheme GetTheme()
@@ -17,21 +17,21 @@ namespace BSoundMute.Controls.Themes
             if (Win32.DwmIsCompositionEnabled)
             {
                 // vista
-                return new Aero(form);
+                return new Aero(_form);
             }
             else if (Application.RenderWithVisualStyles && Win32.version > 6)
             {
                 // vista basic
-                return new Styled(form);
+                return new Styled(_form);
             }
             else if (Application.RenderWithVisualStyles)
             {
                 // xp
-                return new XPStyle(form);
+                return new XPStyle(_form);
             }
             else
             {
-                return new Standard(form);
+                return new Standard(_form);
             }
         }
     }

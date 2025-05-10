@@ -17,7 +17,7 @@ namespace BSoundMute.Controls
         /// </summary>
         public delegate int keyboardHookProc(int code, int wParam, ref keyboardHookStruct lParam);
 
-        private static keyboardHookProc kbhp_;
+        private static keyboardHookProc s_kbhp;
 
         public struct keyboardHookStruct
         {
@@ -97,10 +97,10 @@ namespace BSoundMute.Controls
             // Only install the hook when it's not already installed to avoid duplicate installation
             if (hhook == IntPtr.Zero)
             {
-                kbhp_ = new keyboardHookProc(hookProc);
+                s_kbhp = new keyboardHookProc(hookProc);
 
                 IntPtr hInstance = LoadLibrary("User32");
-                hhook = SetWindowsHookEx(WH_KEYBOARD_LL, kbhp_, hInstance, 0);
+                hhook = SetWindowsHookEx(WH_KEYBOARD_LL, s_kbhp, hInstance, 0);
             }
         }
 
